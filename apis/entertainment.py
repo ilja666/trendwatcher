@@ -6,22 +6,29 @@ Bronnen: IMDb, YouTube, Spotify, Netflix trending content.
 """
 
 import requests
+import os
+
+# YouTube API config
+YOUTUBE_API_KEY = os.environ.get('YOUTUBE_API_KEY', None)
+YOUTUBE_API_URL = "https://www.googleapis.com/youtube/v3/videos"
 
 def get_trending_entertainment():
     """
     Haalt trending entertainment data op.
 
-    Voor MVP: Demo data met populaire trending entertainment.
-    Later te upgraden naar:
-    - YouTube Data API (trending videos)
-    - TMDb API (trending movies/series)
-    - Spotify API (trending music)
-    - IMDb API (trending titles)
+    Gebruikt YouTube API als key beschikbaar, anders demo data.
 
     Returns:
         list: Lijst met trending entertainment items
         None: Als de data ophalen mislukt
     """
+    # Probeer eerst YouTube API (als key beschikbaar)
+    if YOUTUBE_API_KEY:
+        youtube_data = get_youtube_trending()
+        if youtube_data:
+            return youtube_data
+
+    # Fallback naar demo data
     try:
         # MVP: Trending entertainment (statisch voor demo)
         # In productie: vervang met YouTube API, TMDb, etc.
@@ -117,22 +124,51 @@ def get_trending_entertainment():
 
 def get_youtube_trending():
     """
-    FUTURE: Implementatie met echte YouTube Data API.
-
-    Voorbeeld:
-    ```python
-    from googleapiclient.discovery import build
-
-    youtube = build('youtube', 'v3', developerKey=API_KEY)
-    request = youtube.videos().list(
-        part='snippet,statistics',
-        chart='mostPopular',
-        regionCode='US'
-    )
-    response = request.execute()
-    ```
+    Haalt trending videos op van YouTube Data API.
+    Gratis API met 10,000 requests/dag quota.
     """
-    pass
+    if not YOUTUBE_API_KEY or YOUTUBE_API_KEY == 'YOUR_YOUTUBE_API_KEY':
+        return None
+
+    try:
+        params = {
+            'part': 'snippet,statistics',
+            'chart': 'mostPopular',
+            'regionCode': 'US',
+            'maxResults': 10,
+            'videoCategoryId': '0',  # All categories
+            'key': YOUTUBE_API_KEY
+        }
+
+        response = requests.get(YOUTUBE_API_URL, params=params, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+
+        trending_items = []
+
+        if 'items' in data:
+            for video in data['items']:
+                snippet = video.get('snippet', {})
+                stats = video.get('statistics', {})
+
+                # Converteer views naar popularity score (0-100)
+                views = int(stats.get('viewCount', 0))
+                popularity = min(100, int((views / 1000000) * 10))  # 10M views = 100
+
+                trending_items.append({
+                    'title': snippet.get('title', 'Unknown'),
+                    'type': 'YouTube Video',
+                    'category': snippet.get('categoryId', 'General'),
+                    'popularity': popularity,
+                    'platform': 'YouTube',
+                    'rating': min(10, int(stats.get('likeCount', 0)) / max(1, int(stats.get('viewCount', 1))) * 1000)
+                })
+
+        return trending_items
+
+    except Exception as e:
+        print(f"❌ YouTube API Error: {e}")
+        return None
 
 
 def get_tmdb_trending():

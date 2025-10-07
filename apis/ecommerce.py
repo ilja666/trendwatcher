@@ -7,8 +7,12 @@ Gebruikt pytrends voor trending zoekwoorden en product interesse.
 
 import requests
 
-# Gebruik een eenvoudige trending keywords lijst voor MVP
-# Later te vervangen met echte Google Trends API (pytrends) of andere e-commerce APIs
+# Probeer pytrends te importeren (optioneel)
+try:
+    from pytrends.request import TrendReq
+    PYTRENDS_AVAILABLE = True
+except ImportError:
+    PYTRENDS_AVAILABLE = False
 
 def get_trending_ecommerce():
     """

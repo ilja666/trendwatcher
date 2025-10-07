@@ -105,10 +105,17 @@ def entertainment():
     items = get_trending_entertainment()
     if not items:
         items = [{"title": "Demo Content", "type": "Demo", "platform": "Demo", "rating": 0, "popularity": 0}]
+
+    # Prep data for sidebar
+    trending_items = items[:5]  # First 5 items
+    top_rated_items = sorted(items, key=lambda x: x.get('rating', 0), reverse=True)[:5]
+
     return render_template(
         'entertainment_page.html',
         theme='magazine',
-        items=items
+        items=items,
+        trending_items=trending_items,
+        top_rated_items=top_rated_items
     )
 
 @app.route('/sports')

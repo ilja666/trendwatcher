@@ -25,7 +25,7 @@
 <div class="panel">
   <h2>Trending Now</h2>
   <ul class="trend-list">
-    {% for item in items if loop.index <= 5 %}
+    {% for item in trending_items %}
       <li>
         <strong>{{ item.title }}</strong>
         <br><small>{{ item.type }} • {{ item.platform }}</small>
@@ -37,8 +37,7 @@
 <div class="panel">
   <h2>Top Rated</h2>
   <ul class="trend-list">
-    {% set sorted_items = items|sort(attribute='rating', reverse=True) %}
-    {% for item in sorted_items if loop.index <= 5 %}
+    {% for item in top_rated_items %}
       <li>
         <strong>{{ item.title }}</strong>
         <br><small>Rating: {{ item.rating }}/10</small>

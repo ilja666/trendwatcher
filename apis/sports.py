@@ -111,7 +111,7 @@ def get_trending_sports():
         return trending_items
 
     except Exception as e:
-        print(f"❌ Sports Error: {e}")
+        print(f"Sports Error: {e}")
         return None
 
 

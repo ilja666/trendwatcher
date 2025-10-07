@@ -51,10 +51,10 @@ def get_trending_crypto():
 
     except requests.exceptions.RequestException as e:
         # Netwerk fouten, timeouts, etc.
-        print(f"❌ API Error: {e}")
+        print(f"API Error: {e}")
         return None
 
     except Exception as e:
         # Andere onverwachte fouten
-        print(f"❌ Unexpected Error: {e}")
+        print(f"Unexpected Error: {e}")
         return None

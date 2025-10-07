@@ -45,7 +45,7 @@ def get_trending_stocks(api_key=None):
 
         # Check voor API error messages
         if 'Error Message' in data or 'Note' in data:
-            print(f"❌ Alpha Vantage API Error: {data}")
+            print(f"Alpha Vantage API Error: {data}")
             return None
 
         # Verwerk de data - combineer top gainers en top losers
@@ -83,12 +83,12 @@ def get_trending_stocks(api_key=None):
 
     except requests.exceptions.RequestException as e:
         # Netwerk fouten, timeouts, etc.
-        print(f"❌ API Error: {e}")
+        print(f"API Error: {e}")
         return None
 
     except Exception as e:
         # Andere onverwachte fouten
-        print(f"❌ Unexpected Error: {e}")
+        print(f"Unexpected Error: {e}")
         return None
 
 
@@ -132,5 +132,5 @@ def get_stock_quote(symbol, api_key=None):
         return None
 
     except Exception as e:
-        print(f"❌ Error fetching quote for {symbol}: {e}")
+        print(f"Error fetching quote for {symbol}: {e}")
         return None

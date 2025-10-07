@@ -118,7 +118,7 @@ def get_trending_entertainment():
         return trending_items
 
     except Exception as e:
-        print(f"❌ Entertainment Error: {e}")
+        print(f"Entertainment Error: {e}")
         return None
 
 
@@ -167,7 +167,7 @@ def get_youtube_trending():
         return trending_items
 
     except Exception as e:
-        print(f"❌ YouTube API Error: {e}")
+        print(f"YouTube API Error: {e}")
         return None
 
 

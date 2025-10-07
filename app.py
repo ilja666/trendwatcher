@@ -183,11 +183,11 @@ def sports_api():
 
 # Start development server
 if __name__ == '__main__':
-    print("🚀 TrendWatcher Multi-Theme is gestart!")
-    print("📰 Homepage: http://127.0.0.1:5000/")
-    print("💜 Crypto (Cyberpunk): http://127.0.0.1:5000/crypto")
-    print("📊 Stocks (Finance): http://127.0.0.1:5000/stocks")
-    print("🛍️  E-commerce (Shop): http://127.0.0.1:5000/ecommerce")
-    print("🎬 Entertainment (Magazine): http://127.0.0.1:5000/entertainment")
-    print("⚽ Sports (Betting): http://127.0.0.1:5000/sports")
+    print("TrendWatcher Multi-Theme is gestart!")
+    print("Homepage: http://127.0.0.1:5000/")
+    print("Crypto (Cyberpunk): http://127.0.0.1:5000/crypto")
+    print("Stocks (Finance): http://127.0.0.1:5000/stocks")
+    print("E-commerce (Shop): http://127.0.0.1:5000/ecommerce")
+    print("Entertainment (Magazine): http://127.0.0.1:5000/entertainment")
+    print("Sports (Betting): http://127.0.0.1:5000/sports")
     app.run(debug=True, host='0.0.0.0', port=5000)

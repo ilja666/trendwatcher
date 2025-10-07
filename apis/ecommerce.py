@@ -98,7 +98,7 @@ def get_trending_ecommerce():
         return trending_keywords
 
     except Exception as e:
-        print(f"❌ E-commerce Error: {e}")
+        print(f"E-commerce Error: {e}")
         return None
 
 

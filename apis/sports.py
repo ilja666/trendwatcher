@@ -2,26 +2,31 @@
 Sports Trends API Module
 =========================
 Deze module handelt trending sports data af.
-Bronnen: ESPN, TheSportsDB, Reddit sports communities.
+Bronnen: TheSportsDB (live events), ESPN, Reddit sports communities.
 """
 
 import requests
+from datetime import datetime, timedelta
+
+# TheSportsDB API endpoint (gratis, geen key nodig voor basis calls)
+THESPORTSDB_BASE_URL = "https://www.thesportsdb.com/api/v1/json/3"
 
 def get_trending_sports():
     """
     Haalt trending sports events en nieuws op.
 
-    Voor MVP: Demo data met populaire trending sports.
-    Later te upgraden naar:
-    - ESPN API (live scores, trending news)
-    - TheSportsDB API (league info, trending teams)
-    - Reddit Sports API (trending discussions)
-    - SportsData.io (real-time sports data)
+    Probeert eerst live data van TheSportsDB API, fallback naar demo data.
 
     Returns:
         list: Lijst met trending sports items
         None: Als de data ophalen mislukt
     """
+    # Probeer eerst TheSportsDB API
+    live_data = get_thesportsdb_trending()
+    if live_data and len(live_data) > 0:
+        return live_data
+
+    # Fallback naar demo data als API niet werkt
     try:
         # MVP: Trending sports (statisch voor demo)
         # In productie: vervang met ESPN API, TheSportsDB, etc.
@@ -125,10 +130,57 @@ def get_espn_trending():
 
 def get_thesportsdb_trending():
     """
-    FUTURE: Implementatie met TheSportsDB API.
-    Gratis API voor league data, team info, etc.
+    Haalt live sports events op van TheSportsDB API.
+    Gratis API voor league data, live scores, upcoming matches.
+
+    Returns:
+        list: Lijst met trending sports events
+        None: Als de API call mislukt
     """
-    pass
+    try:
+        trending_items = []
+
+        # Populaire leagues om te checken (Belgische Jupiler Pro League eerst!)
+        popular_leagues = [
+            ('4330', 'Belgian Jupiler Pro League', 'Football'),
+            ('4424', 'UEFA Champions League', 'Football'),
+            ('4328', 'English Premier League', 'Football'),
+            ('4331', 'Spanish La Liga', 'Football'),
+            ('4332', 'Italian Serie A', 'Football'),
+            ('4387', 'NBA', 'Basketball'),
+        ]
+
+        # Haal volgende events op voor elke league
+        for league_id, league_name, sport in popular_leagues[:3]:  # Eerste 3 om API calls te beperken
+            try:
+                url = f"{THESPORTSDB_BASE_URL}/eventsnextleague.php?id={league_id}"
+                response = requests.get(url, timeout=5)
+                response.raise_for_status()
+                data = response.json()
+
+                if data and 'events' in data and data['events']:
+                    # Neem eerste upcoming event
+                    for event in data['events'][:2]:  # Max 2 per league
+                        if event:
+                            trending_items.append({
+                                'title': f"{event.get('strHomeTeam', 'TBD')} vs {event.get('strAwayTeam', 'TBD')}",
+                                'sport': sport,
+                                'league': league_name,
+                                'popularity': 85 + len(trending_items) * 2,  # Mock popularity score
+                                'status': event.get('strStatus', 'Upcoming'),
+                                'engagement': f"{(100 - len(trending_items) * 10)}K mentions"  # Mock engagement
+                            })
+
+            except Exception as e:
+                # Skip deze league bij fout, ga door met volgende
+                print(f"Error fetching league {league_id}: {e}")
+                continue
+
+        return trending_items if len(trending_items) > 0 else None
+
+    except Exception as e:
+        print(f"TheSportsDB Error: {e}")
+        return None
 
 
 def get_reddit_sports_trending():

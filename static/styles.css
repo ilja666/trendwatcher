@@ -506,3 +506,63 @@ a {
 .theme-sports .section-title {
   color: #22c55e;
 }
+
+/* ========== REFRESH BUTTON ========== */
+.refresh-btn {
+  background: var(--accent);
+  color: var(--bg);
+  border: 2px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.refresh-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.refresh-btn:active {
+  transform: translateY(0);
+}
+
+.refresh-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Theme-specific refresh buttons */
+.theme-cyberpunk .refresh-btn {
+  background: #7c3aed;
+  color: #fff;
+  border-color: #6d28d9;
+}
+
+.theme-finance .refresh-btn {
+  background: #3b82f6;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.theme-sports .refresh-btn {
+  background: #22c55e;
+  color: #062b11;
+  border-color: #16a34a;
+}
+
+.theme-magazine .refresh-btn {
+  background: #c19a6b;
+  color: #fff;
+  border-color: #a0826d;
+}
+
+.theme-shop .refresh-btn {
+  background: #f59e0b;
+  color: #fff;
+  border-color: #d97706;
+}

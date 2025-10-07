@@ -2,9 +2,12 @@
 {% block title %}E-commerce Trends — TrendWatcher{% endblock %}
 
 {% block content %}
-  <h1 class="section-title">🛍️ E-COMMERCE TRENDING</h1>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+    <h1 class="section-title">🛍️ E-COMMERCE TRENDING</h1>
+    <button onclick="refreshData('ecommerce', 'ecommerce-grid')" class="refresh-btn">🔄 Refresh Data</button>
+  </div>
 
-  <div class="grid">
+  <div class="grid" id="ecommerce-grid">
     {% for product in products %}
       <div class="card">
         <img src="{{ url_for('static', filename='placeholder.jpg') }}" alt="{{ product.keyword }}">

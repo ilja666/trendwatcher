@@ -3,9 +3,12 @@
 {% block title %}Entertainment — TrendWatcher{% endblock %}
 
 {% block content %}
-<h1 class="section-title">ENTERTAINMENT TRENDS</h1>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+  <h1 class="section-title">ENTERTAINMENT TRENDS</h1>
+  <button onclick="refreshData('entertainment', 'entertainment-grid')" class="refresh-btn">🔄 Refresh Data</button>
+</div>
 
-<div class="grid">
+<div class="grid" id="entertainment-grid">
   {% for item in items %}
     <div class="card">
       <img src="{{ url_for('static', filename='placeholder.jpg') }}" alt="{{ item.title }}">

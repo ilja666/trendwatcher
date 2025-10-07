@@ -2,9 +2,12 @@
 {% block title %}Stock Market — TrendWatcher{% endblock %}
 
 {% block content %}
-  <h1 class="section-title">📈 STOCK MARKET</h1>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+    <h1 class="section-title">📈 STOCK MARKET</h1>
+    <button onclick="refreshData('stocks', 'stocks-table')" class="refresh-btn">🔄 Refresh Data</button>
+  </div>
 
-  <div class="stocks-table">
+  <div class="stocks-table" id="stocks-table">
     {% for stock in stocks %}
       <div class="stock-row {{ 'gainer' if stock.trend_type == 'gainer' else 'loser' }}">
         <div class="stock-symbol">{{ stock.symbol }}</div>

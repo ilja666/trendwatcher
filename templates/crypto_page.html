@@ -2,9 +2,12 @@
 {% block title %}Crypto Trends — TrendWatcher{% endblock %}
 
 {% block content %}
-  <h1 class="section-title">⚡ CRYPTO TRENDS</h1>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+    <h1 class="section-title">⚡ CRYPTO TRENDS</h1>
+    <button onclick="refreshData('crypto', 'crypto-grid')" class="refresh-btn">🔄 Refresh Data</button>
+  </div>
 
-  <div class="crypto-grid">
+  <div class="crypto-grid" id="crypto-grid">
     {% for coin in coins %}
       <div class="crypto-card">
         <div class="crypto-header">

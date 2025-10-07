@@ -39,5 +39,62 @@
   <footer class="tw-footer">
     <small>© 2025 TrendWatcher - Multi-Market Intelligence</small>
   </footer>
+
+  <!-- AJAX Refresh Functionality -->
+  <script>
+    /**
+     * Refresh data voor een specifieke category
+     * @param {string} category - crypto, stocks, entertainment, sports, ecommerce
+     * @param {string} containerId - ID van container om bij te werken
+     */
+    function refreshData(category, containerId) {
+      const button = event.target;
+      const originalText = button.textContent;
+
+      // Toon loading state
+      button.textContent = 'Refreshing...';
+      button.disabled = true;
+
+      // Haal fresh data op via JSON API
+      fetch(`/api/${category}/trending`)
+        .then(response => response.json())
+        .then(result => {
+          if (result.success && result.data) {
+            // Reload pagina om nieuwe data te tonen (simpelste oplossing)
+            location.reload();
+          } else {
+            alert('Error refreshing data: ' + (result.error || 'Unknown error'));
+            button.textContent = originalText;
+            button.disabled = false;
+          }
+        })
+        .catch(error => {
+          console.error('Refresh error:', error);
+          alert('Network error while refreshing');
+          button.textContent = originalText;
+          button.disabled = false;
+        });
+    }
+
+    /**
+     * Auto-refresh timer - refresh data elke N minuten
+     * @param {number} minutes - Aantal minuten tussen refreshes
+     */
+    function startAutoRefresh(minutes) {
+      const milliseconds = minutes * 60 * 1000;
+      setInterval(() => {
+        const currentPath = window.location.pathname;
+        const category = currentPath.substring(1); // Remove leading /
+
+        if (category && category !== '') {
+          console.log(`Auto-refreshing ${category} data...`);
+          location.reload();
+        }
+      }, milliseconds);
+    }
+
+    // Optional: Start auto-refresh elke 5 minuten
+    // startAutoRefresh(5);
+  </script>
 </body>
 </html>

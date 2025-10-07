@@ -2,9 +2,12 @@
 {% block title %}Sports — TrendWatcher{% endblock %}
 
 {% block content %}
-  <h1 class="section-title">⚽ SPORTS TRENDING</h1>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+    <h1 class="section-title">⚽ SPORTS TRENDING</h1>
+    <button onclick="refreshData('sports', 'sports-table')" class="refresh-btn">🔄 Refresh Data</button>
+  </div>
 
-  <table class="odds-table">
+  <table class="odds-table" id="sports-table">
     <thead>
       <tr>
         <th>Event</th>

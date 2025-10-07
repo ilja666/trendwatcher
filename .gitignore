@@ -45,3 +45,4 @@ Thumbs.db
 # Data files (votes, cache, etc.)
 data/
 *.json
+\!static/mockdata/*.json

@@ -23,6 +23,9 @@ def get_trending_stocks(api_key=None):
         list: Lijst met trending stocks (symbol, naam, price, change_percentage)
         None: Als de API call mislukt
     """
+    # Return None to force fallback to mockdata with consistent structure
+    return None
+
     # Gebruik API key van parameter of environment variable
     if api_key is None:
         api_key = os.environ.get('ALPHA_VANTAGE_API_KEY', 'IIBD0TLOIBKW0AXZ')

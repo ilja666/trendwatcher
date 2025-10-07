@@ -7,19 +7,44 @@
     <button onclick="refreshData('ecommerce', 'ecommerce-grid')" class="refresh-btn">🔄 Refresh Data</button>
   </div>
 
-  <div class="grid" id="ecommerce-grid">
+  <!-- Search Filter -->
+  <div style="margin-bottom: 1rem;">
+    <input id="filter" type="text" placeholder="Search products…"
+           style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--fg);" />
+  </div>
+
+  <div class="articles-grid" id="ecommerce-grid">
     {% for product in products %}
-      <div class="card">
-        <img src="{{ url_for('static', filename='placeholder.jpg') }}" alt="{{ product.keyword }}">
-        <h3>{{ product.keyword }}</h3>
-        <p><strong>Category:</strong> {{ product.category }}</p>
-        <p><strong>Interest Score:</strong> {{ product.value }}/100</p>
-        {% if product.growth %}
-          <p class="pos"><strong>Growth:</strong> {{ product.growth }}</p>
-        {% endif %}
-      </div>
+      <article data-item data-name="{{ product.keyword }} {{ product.category }}" class="article-card">
+        <img src="{{ product.image or url_for('static', filename='placeholder.svg') }}"
+             alt="{{ product.keyword }}"
+             class="article-image"
+             loading="lazy"
+             onerror="this.src='{{ url_for('static', filename='placeholder.svg') }}'">
+        <div class="article-content">
+          <h2 class="article-title">{{ product.keyword }}</h2>
+          <p class="article-meta">{{ product.category }} · Score: {{ product.value }}/100</p>
+          <p class="article-description">{{ product.description or 'Trending product category' }}</p>
+          <div class="article-stats">
+            <span class="stat-badge pos">{{ product.growth }}</span>
+            <span class="stat-label">Interest: {{ product.value }}/100</span>
+          </div>
+        </div>
+      </article>
     {% endfor %}
   </div>
+
+  <!-- Search Script -->
+  <script>
+    const box = document.getElementById('filter');
+    box?.addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll('[data-item]').forEach(el => {
+        const text = (el.getAttribute('data-name') || el.textContent).toLowerCase();
+        el.style.display = text.includes(q) ? '' : 'none';
+      });
+    });
+  </script>
 {% endblock %}
 
 {% block sidebar %}

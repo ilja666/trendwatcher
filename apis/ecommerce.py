@@ -29,10 +29,13 @@ def get_trending_ecommerce():
         list: Lijst met trending products/keywords
         None: Als de data ophalen mislukt
     """
+    # Return None to force fallback to mockdata which has images
+    return None
+
     try:
-        # MVP: Trending shopping keywords (statisch voor demo)
+        # OLD MVP: Trending shopping keywords (statisch voor demo)
         # In productie: vervang dit met echte API calls
-        trending_keywords = [
+        trending_keywords_old = [
             {
                 'keyword': 'AI Gadgets',
                 'value': 95,

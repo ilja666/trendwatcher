@@ -1,0 +1,508 @@
+/* TrendWatcher - Multi-Theme Stylesheet */
+
+:root {
+  --bg: #f7f7f7;
+  --fg: #111;
+  --muted: #6b7280;
+  --card: #fff;
+  --border: #e5e7eb;
+  --pos: #16a34a;
+  --neg: #dc2626;
+  --accent: #111;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.6 system-ui, -apple-system, 'Segoe UI', sans-serif;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* HEADER */
+.tw-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 2px solid var(--border);
+  background: var(--card);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand a {
+  font-weight: 900;
+  font-size: 1.3em;
+  letter-spacing: 1px;
+}
+
+.tw-nav a {
+  margin-left: 20px;
+  opacity: 0.8;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.tw-nav a:hover {
+  opacity: 1;
+}
+
+/* LAYOUT */
+.tw-container {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 968px) {
+  .tw-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* SIDEBAR */
+.tw-aside .panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.panel h4 {
+  margin: 0 0 12px 0;
+  font-size: 1em;
+  font-weight: 700;
+}
+
+.movers-list {
+  list-style: none;
+}
+
+.movers-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.movers-list li:last-child {
+  border-bottom: none;
+}
+
+.pos {
+  color: var(--pos);
+  font-weight: 700;
+}
+
+.neg {
+  color: var(--neg);
+  font-weight: 700;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-nav a {
+  padding: 8px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.sidebar-nav a:hover {
+  background: var(--border);
+}
+
+/* HERO SECTION (Homepage) */
+.hero {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.hero img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  background: #ddd;
+}
+
+.hero h1 {
+  margin: 18px 20px 10px;
+  font-size: 2em;
+  line-height: 1.2;
+}
+
+.hero p {
+  margin: 0 20px 20px;
+  color: var(--muted);
+  font-size: 1.1em;
+}
+
+/* GRID (Homepage articles) */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  background: #eee;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.card h3 {
+  margin: 0 0 6px 0;
+  font-size: 1.1em;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 0.95em;
+}
+
+/* SECTION TITLE */
+.section-title {
+  margin: 0 0 20px 0;
+  font-size: 2.2em;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+/* CRYPTO PAGE */
+.crypto-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.crypto-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s;
+}
+
+.crypto-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.crypto-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.crypto-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+}
+
+.crypto-card h2 {
+  font-size: 1.3em;
+  margin-bottom: 4px;
+}
+
+.crypto-symbol {
+  color: var(--muted);
+  font-size: 0.9em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.crypto-stats {
+  margin-top: 12px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.95em;
+}
+
+.stat-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  font-size: 0.85em;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-weight: 700;
+}
+
+.trend-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.8em;
+  font-weight: 700;
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* STOCKS PAGE */
+.stocks-table {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stock-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 120px 150px;
+  align-items: center;
+  padding: 16px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.stock-row:hover {
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.stock-symbol {
+  font-weight: 800;
+  font-size: 1.1em;
+}
+
+.stock-price {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.stock-change {
+  font-size: 1.1em;
+  font-weight: 700;
+  text-align: right;
+}
+
+.stock-volume {
+  color: var(--muted);
+  font-size: 0.9em;
+  text-align: right;
+}
+
+/* SPORTS PAGE */
+.odds-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.odds-table th,
+.odds-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.odds-table th {
+  background: rgba(0, 0, 0, 0.02);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85em;
+  letter-spacing: 0.5px;
+}
+
+.odds-table tr:last-child td {
+  border-bottom: none;
+}
+
+.odds-table tr:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status-badge.live {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.upcoming {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status-badge.highlights {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* FOOTER */
+.tw-footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+/* ========== THEMES ========== */
+
+/* NEWSPAPER (Default/Homepage) */
+.theme-newspaper {
+  --bg: #f6f6f3;
+  --fg: #111;
+  --card: #fff;
+  --border: #e5e7eb;
+  --accent: #111;
+}
+
+/* CYBERPUNK (Crypto) */
+.theme-cyberpunk {
+  --bg: #0a0e27;
+  --fg: #e5e7eb;
+  --card: #0f1436;
+  --border: #232858;
+  --accent: #7c3aed;
+  --pos: #22d3ee;
+  --neg: #fb7185;
+  --muted: #94a3b8;
+}
+
+.theme-cyberpunk .tw-header {
+  background: #0f1436;
+  border-color: #232858;
+}
+
+.theme-cyberpunk .glow {
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.4);
+  border-color: #7c3aed;
+}
+
+.theme-cyberpunk .brand a {
+  background: linear-gradient(135deg, #7c3aed, #22d3ee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.theme-cyberpunk .trend-badge {
+  background: rgba(124, 58, 237, 0.2);
+  border-color: #7c3aed;
+  color: #c4b5fd;
+}
+
+/* FINANCE (Stocks) */
+.theme-finance {
+  --bg: #0f172a;
+  --fg: #e5e7eb;
+  --card: #1e293b;
+  --border: #334155;
+  --accent: #38bdf8;
+  --muted: #94a3b8;
+}
+
+.theme-finance .tw-header {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.theme-finance .section-title {
+  color: #38bdf8;
+}
+
+/* SHOP (E-commerce) */
+.theme-shop {
+  --bg: #fafafa;
+  --fg: #111;
+  --card: #fff;
+  --border: #eee;
+  --accent: #111;
+}
+
+/* MAGAZINE (Entertainment) */
+.theme-magazine {
+  --bg: #fdf5ec;
+  --fg: #1b1b1b;
+  --card: #fff;
+  --border: #f0e2cf;
+  --accent: #8b5cf6;
+  --muted: #78716c;
+}
+
+.theme-magazine .section-title {
+  color: #8b5cf6;
+}
+
+/* SPORTS (Betting style) */
+.theme-sports {
+  --bg: #062b11;
+  --fg: #e6ffe9;
+  --card: #0b3a18;
+  --border: #0f4d21;
+  --accent: #22c55e;
+  --pos: #4ade80;
+  --neg: #fca5a5;
+  --muted: #86efac;
+}
+
+.theme-sports .tw-header {
+  background: #0b3a18;
+  border-color: #0f4d21;
+}
+
+.theme-sports .section-title {
+  color: #22c55e;
+}

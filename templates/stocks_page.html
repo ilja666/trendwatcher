@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Stock Market — TrendWatcher{% endblock %}
+
+{% block content %}
+  <h1 class="section-title">📈 STOCK MARKET</h1>
+
+  <div class="stocks-table">
+    {% for stock in stocks %}
+      <div class="stock-row {{ 'gainer' if stock.trend_type == 'gainer' else 'loser' }}">
+        <div class="stock-symbol">{{ stock.symbol }}</div>
+        <div class="stock-price">${{ "%.2f"|format(stock.price|float) }}</div>
+        <div class="stock-change {{ 'pos' if stock.trend_type == 'gainer' else 'neg' }}">
+          {{ stock.change_percentage }}
+        </div>
+        <div class="stock-volume">Vol: {{ stock.volume|int|string|batch(3,'.')|join(',') }}</div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{% block sidebar %}
+  <div class="panel">
+    <h4>📊 Market Status</h4>
+    <p>Real-time data from Alpha Vantage API.</p>
+  </div>
+
+  <div class="panel">
+    <h4>🎯 Top Movers</h4>
+    <p>Gainers and losers updated live.</p>
+  </div>
+{% endblock %}

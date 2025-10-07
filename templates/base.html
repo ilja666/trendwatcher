@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HP85ZJG199"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HP85ZJG199');
+  </script>
+
+  <meta charset="utf-8">
+  <title>{% block title %}TrendWatcher{% endblock %}</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="theme-{{ theme|default('newspaper') }}">
+  <header class="tw-header">
+    <div class="brand"><a href="/">▶ TRENDWATCHER ◀</a></div>
+    <nav class="tw-nav">
+      <a href="/crypto">Crypto</a>
+      <a href="/stocks">Stocks</a>
+      <a href="/ecommerce">E-commerce</a>
+      <a href="/entertainment">Entertainment</a>
+      <a href="/sports">Sports</a>
+    </nav>
+  </header>
+
+  <main class="tw-container">
+    <section class="tw-main">
+      {% block content %}{% endblock %}
+    </section>
+    <aside class="tw-aside">
+      {% block sidebar %}{% endblock %}
+    </aside>
+  </main>
+
+  <footer class="tw-footer">
+    <small>© 2025 TrendWatcher - Multi-Market Intelligence</small>
+  </footer>
+</body>
+</html>

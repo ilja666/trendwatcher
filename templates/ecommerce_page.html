@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}E-commerce Trends — TrendWatcher{% endblock %}
+
+{% block content %}
+  <h1 class="section-title">🛍️ E-COMMERCE TRENDING</h1>
+
+  <div class="grid">
+    {% for product in products %}
+      <div class="card">
+        <img src="{{ url_for('static', filename='placeholder.jpg') }}" alt="{{ product.keyword }}">
+        <h3>{{ product.keyword }}</h3>
+        <p><strong>Category:</strong> {{ product.category }}</p>
+        <p><strong>Interest Score:</strong> {{ product.value }}/100</p>
+        {% if product.growth %}
+          <p class="pos"><strong>Growth:</strong> {{ product.growth }}</p>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{% block sidebar %}
+  <div class="panel">
+    <h4>🔥 Hot Products</h4>
+    <p>Trending shopping keywords and product categories.</p>
+  </div>
+
+  <div class="panel">
+    <h4>📊 Data Source</h4>
+    <p>Google Trends ready - demo data active.</p>
+  </div>
+{% endblock %}

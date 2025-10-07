@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Sports — TrendWatcher{% endblock %}
+
+{% block content %}
+  <h1 class="section-title">⚽ SPORTS TRENDING</h1>
+
+  <table class="odds-table">
+    <thead>
+      <tr>
+        <th>Event</th>
+        <th>League</th>
+        <th>Status</th>
+        <th>Engagement</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for match in matches %}
+        <tr>
+          <td><strong>{{ match.title }}</strong></td>
+          <td>{{ match.league }}</td>
+          <td><span class="status-badge {{ match.status|lower }}">{{ match.status }}</span></td>
+          <td>{{ match.engagement }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block sidebar %}
+  <div class="panel">
+    <h4>🟢 LIVE Events</h4>
+    <p>Real-time sports trending data.</p>
+  </div>
+
+  <div class="panel">
+    <h4>⚡ Hot Matches</h4>
+    <p>Most engaged events right now.</p>
+  </div>
+{% endblock %}

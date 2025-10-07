@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Crypto Trends — TrendWatcher{% endblock %}
+
+{% block content %}
+  <h1 class="section-title">⚡ CRYPTO TRENDS</h1>
+
+  <div class="crypto-grid">
+    {% for coin in coins %}
+      <div class="crypto-card">
+        <div class="crypto-header">
+          <img src="{{ coin.thumb }}" alt="{{ coin.name }}" class="crypto-icon" onerror="this.src='{{ url_for('static', filename='placeholder.jpg') }}'">
+          <div>
+            <h2>{{ coin.name }}</h2>
+            <div class="crypto-symbol">{{ coin.symbol }}</div>
+          </div>
+        </div>
+        <div class="crypto-stats">
+          <div class="stat-row">
+            <span class="stat-label">MCap Rank</span>
+            <span class="stat-value">#{{ coin.market_cap_rank or 'N/A' }}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Score</span>
+            <span class="stat-value">{{ coin.score or 'N/A' }}</span>
+          </div>
+          <span class="trend-badge">[TRENDING]</span>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{% block sidebar %}
+  <div class="panel glow">
+    <h4>💜 Cyberpunk Mode</h4>
+    <p>Real-time crypto data from CoinGecko API.</p>
+  </div>
+
+  <div class="panel glow">
+    <h4>⚡ Live Updates</h4>
+    <p>Trending coins refresh automatically.</p>
+  </div>
+{% endblock %}

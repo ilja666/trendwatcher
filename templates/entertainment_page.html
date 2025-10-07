@@ -3,7 +3,7 @@
 {% block title %}Entertainment — TrendWatcher{% endblock %}
 
 {% block content %}
-<h1 class="section-title">🎬 ENTERTAINMENT TRENDS</h1>
+<h1 class="section-title">ENTERTAINMENT TRENDS</h1>
 
 <div class="grid">
   {% for item in items %}
@@ -23,9 +23,9 @@
 
 {% block sidebar %}
 <div class="panel">
-  <h2>🎥 Trending Now</h2>
+  <h2>Trending Now</h2>
   <ul class="trend-list">
-    {% for item in items[:5] %}
+    {% for item in items if loop.index <= 5 %}
       <li>
         <strong>{{ item.title }}</strong>
         <br><small>{{ item.type }} • {{ item.platform }}</small>
@@ -35,9 +35,10 @@
 </div>
 
 <div class="panel">
-  <h2>📊 Top Rated</h2>
+  <h2>Top Rated</h2>
   <ul class="trend-list">
-    {% for item in items|sort(attribute='rating', reverse=True)[:5] %}
+    {% set sorted_items = items|sort(attribute='rating', reverse=True) %}
+    {% for item in sorted_items if loop.index <= 5 %}
       <li>
         <strong>{{ item.title }}</strong>
         <br><small>Rating: {{ item.rating }}/10</small>

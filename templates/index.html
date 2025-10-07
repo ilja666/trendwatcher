@@ -387,10 +387,10 @@
             <button class="tab-btn" onclick="switchTab('ecommerce')" id="tab-ecommerce">
                 [E-COMMERCE]
             </button>
-            <button class="tab-btn" disabled id="tab-entertainment">
+            <button class="tab-btn" onclick="switchTab('entertainment')" id="tab-entertainment">
                 [ENTERTAINMENT]
             </button>
-            <button class="tab-btn" disabled id="tab-sports">
+            <button class="tab-btn" onclick="switchTab('sports')" id="tab-sports">
                 [SPORTS]
             </button>
         </div>
@@ -420,6 +420,16 @@
         <!-- Tab Content: E-commerce -->
         <div id="content-ecommerce" class="tab-content">
             <div class="items-grid" id="ecommerce-grid"></div>
+        </div>
+
+        <!-- Tab Content: Entertainment -->
+        <div id="content-entertainment" class="tab-content">
+            <div class="items-grid" id="entertainment-grid"></div>
+        </div>
+
+        <!-- Tab Content: Sports -->
+        <div id="content-sports" class="tab-content">
+            <div class="items-grid" id="sports-grid"></div>
         </div>
     </div>
 
@@ -459,6 +469,10 @@
                 loadStocksData();
             } else if (currentTab === 'ecommerce') {
                 loadEcommerceData();
+            } else if (currentTab === 'entertainment') {
+                loadEntertainmentData();
+            } else if (currentTab === 'sports') {
+                loadSportsData();
             }
         }
 
@@ -667,6 +681,183 @@
                             <span class="stat-value">#${index + 1}</span>
                         </div>
                         <span class="trend-badge trending">[HOT]</span>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        /**
+         * Laadt entertainment trending data
+         */
+        async function loadEntertainmentData() {
+            showLoading();
+            hideError();
+            document.getElementById('entertainment-grid').innerHTML = '';
+
+            try {
+                const response = await fetch('/api/entertainment/trending');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const result = await response.json();
+                hideLoading();
+
+                if (result.success && result.data && result.data.length > 0) {
+                    displayEntertainmentData(result.data);
+                } else {
+                    throw new Error('Geen trending entertainment gevonden');
+                }
+            } catch (error) {
+                hideLoading();
+                showError(`[ERROR] Entertainment data unavailable: ${error.message}`);
+                console.error('Error:', error);
+            }
+        }
+
+        /**
+         * Laadt sports trending data
+         */
+        async function loadSportsData() {
+            showLoading();
+            hideError();
+            document.getElementById('sports-grid').innerHTML = '';
+
+            try {
+                const response = await fetch('/api/sports/trending');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const result = await response.json();
+                hideLoading();
+
+                if (result.success && result.data && result.data.length > 0) {
+                    displaySportsData(result.data);
+                } else {
+                    throw new Error('Geen trending sports gevonden');
+                }
+            } catch (error) {
+                hideLoading();
+                showError(`[ERROR] Sports data unavailable: ${error.message}`);
+                console.error('Error:', error);
+            }
+        }
+
+        /**
+         * Toon entertainment data
+         */
+        function displayEntertainmentData(items) {
+            const container = document.getElementById('entertainment-grid');
+            container.innerHTML = '';
+
+            items.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'item-card';
+
+                const iconMap = {
+                    'Movie': '🎬',
+                    'TV Series': '📺',
+                    'Gaming': '🎮',
+                    'Music/Concert': '🎵',
+                    'Music': '🎤',
+                    'Tech/Music': '🤖',
+                    'Movie News': '📰'
+                };
+
+                const icon = iconMap[item.type] || '🎭';
+
+                card.innerHTML = `
+                    <div class="item-header">
+                        <div class="item-icon" style="background: rgba(59, 130, 246, 0.2); display: flex; align-items: center; justify-content: center; color: var(--accent-blue); font-weight: bold; font-size: 1.5em; border-color: var(--accent-blue);">
+                            ${icon}
+                        </div>
+                        <div class="item-info">
+                            <h2>${item.title}</h2>
+                            <div class="item-symbol">${item.type}</div>
+                        </div>
+                    </div>
+                    <div class="item-stats">
+                        <div class="stat-row">
+                            <span class="stat-label">Category</span>
+                            <span class="stat-value">${item.category}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Platform</span>
+                            <span class="stat-value">${item.platform}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Rating</span>
+                            <span class="stat-value">${item.rating}/10</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Popularity</span>
+                            <span class="stat-value">${item.popularity}/100</span>
+                        </div>
+                        <span class="trend-badge trending">[TRENDING]</span>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        /**
+         * Toon sports data
+         */
+        function displaySportsData(items) {
+            const container = document.getElementById('sports-grid');
+            container.innerHTML = '';
+
+            items.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'item-card';
+
+                const sportIcons = {
+                    'Football': '⚽',
+                    'Basketball': '🏀',
+                    'Formula 1': '🏎️',
+                    'Tennis': '🎾',
+                    'American Football': '🏈',
+                    'MMA': '🥊',
+                    'Cycling': '🚴',
+                    'Multi-Sport': '🏅'
+                };
+
+                const icon = sportIcons[item.sport] || '🏆';
+                const statusColors = {
+                    'Live': 'var(--danger)',
+                    'Upcoming': 'var(--accent-cyan)',
+                    'Highlights': 'var(--accent-purple)'
+                };
+                const statusColor = statusColors[item.status] || 'var(--text-secondary)';
+
+                card.innerHTML = `
+                    <div class="item-header">
+                        <div class="item-icon" style="background: rgba(6, 182, 212, 0.2); display: flex; align-items: center; justify-content: center; color: var(--accent-cyan); font-weight: bold; font-size: 1.5em; border-color: var(--accent-cyan);">
+                            ${icon}
+                        </div>
+                        <div class="item-info">
+                            <h2>${item.title}</h2>
+                            <div class="item-symbol">${item.sport}</div>
+                        </div>
+                    </div>
+                    <div class="item-stats">
+                        <div class="stat-row">
+                            <span class="stat-label">League</span>
+                            <span class="stat-value">${item.league}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Status</span>
+                            <span class="stat-value" style="color: ${statusColor}">${item.status}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Engagement</span>
+                            <span class="stat-value">${item.engagement}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Popularity</span>
+                            <span class="stat-value">${item.popularity}/100</span>
+                        </div>
+                        <span class="trend-badge trending">[${item.status.toUpperCase()}]</span>
                     </div>
                 `;
 

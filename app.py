@@ -8,6 +8,8 @@ from flask import Flask, jsonify, render_template
 from apis.coingecko import get_trending_crypto
 from apis.stocks import get_trending_stocks
 from apis.ecommerce import get_trending_ecommerce
+from apis.entertainment import get_trending_entertainment
+from apis.sports import get_trending_sports
 
 # Flask app initialiseren
 app = Flask(__name__)
@@ -112,6 +114,58 @@ def ecommerce_trending():
             'error': f'Er ging iets mis: {str(e)}'
         }), 500
 
+# Route: API endpoint voor trending entertainment data
+@app.route('/api/entertainment/trending')
+def entertainment_trending():
+    """
+    Haalt trending entertainment data op (movies, music, gaming, etc.).
+    Returns:
+        JSON response met trending entertainment items
+    """
+    try:
+        trending_data = get_trending_entertainment()
+
+        if trending_data is None:
+            return jsonify({
+                'error': 'Kon geen entertainment data ophalen'
+            }), 500
+
+        return jsonify({
+            'success': True,
+            'data': trending_data
+        })
+
+    except Exception as e:
+        return jsonify({
+            'error': f'Er ging iets mis: {str(e)}'
+        }), 500
+
+# Route: API endpoint voor trending sports data
+@app.route('/api/sports/trending')
+def sports_trending():
+    """
+    Haalt trending sports events en nieuws op.
+    Returns:
+        JSON response met trending sports items
+    """
+    try:
+        trending_data = get_trending_sports()
+
+        if trending_data is None:
+            return jsonify({
+                'error': 'Kon geen sports data ophalen'
+            }), 500
+
+        return jsonify({
+            'success': True,
+            'data': trending_data
+        })
+
+    except Exception as e:
+        return jsonify({
+            'error': f'Er ging iets mis: {str(e)}'
+        }), 500
+
 # Start de Flask development server
 if __name__ == '__main__':
     print("🚀 TrendWatcher is gestart!")
@@ -120,4 +174,6 @@ if __name__ == '__main__':
     print("   - Crypto: http://127.0.0.1:5000/crypto/trending")
     print("   - Stocks: http://127.0.0.1:5000/api/stocks/trending")
     print("   - E-commerce: http://127.0.0.1:5000/api/ecommerce/trending")
+    print("   - Entertainment: http://127.0.0.1:5000/api/entertainment/trending")
+    print("   - Sports: http://127.0.0.1:5000/api/sports/trending")
     app.run(debug=True, host='0.0.0.0', port=5000)

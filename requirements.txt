@@ -8,6 +8,9 @@ Flask==3.0.0
 # HTTP requests library voor API calls
 requests==2.31.0
 
+# Environment variables management
+python-dotenv==1.0.0
+
 # WSGI server voor production deployment (optioneel)
 gunicorn==21.2.0
 

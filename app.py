@@ -6,6 +6,7 @@ Dit is de hoofd-applicatie die de Flask server runt.
 
 from flask import Flask, jsonify, render_template
 from apis.coingecko import get_trending_crypto
+from apis.stocks import get_trending_stocks
 
 # Flask app initialiseren
 app = Flask(__name__)
@@ -50,9 +51,41 @@ def crypto_trending():
             'error': f'Er ging iets mis: {str(e)}'
         }), 500
 
+# Route: API endpoint voor trending stocks data
+@app.route('/api/stocks/trending')
+def stocks_trending():
+    """
+    Haalt trending stock market data op van Alpha Vantage API.
+    Returns:
+        JSON response met trending stocks (top gainers en losers)
+    """
+    try:
+        # Haal trending stocks data op via de Alpha Vantage module
+        trending_data = get_trending_stocks()
+
+        # Check of we data hebben ontvangen
+        if trending_data is None:
+            return jsonify({
+                'error': 'Kon geen data ophalen van Alpha Vantage API'
+            }), 500
+
+        # Succesvol - stuur data terug
+        return jsonify({
+            'success': True,
+            'data': trending_data
+        })
+
+    except Exception as e:
+        # Error handling voor onverwachte fouten
+        return jsonify({
+            'error': f'Er ging iets mis: {str(e)}'
+        }), 500
+
 # Start de Flask development server
 if __name__ == '__main__':
     print("🚀 TrendWatcher is gestart!")
     print("📊 Dashboard: http://127.0.0.1:5000/dashboard")
-    print("🔗 API endpoint: http://127.0.0.1:5000/crypto/trending")
+    print("🔗 API endpoints:")
+    print("   - Crypto: http://127.0.0.1:5000/crypto/trending")
+    print("   - Stocks: http://127.0.0.1:5000/api/stocks/trending")
     app.run(debug=True, host='0.0.0.0', port=5000)

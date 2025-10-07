@@ -1,0 +1,24 @@
+<nav class="tw-navbar">
+  <div class="tw-logo">
+    <a href="/">▶ TRENDWATCHER ◀</a>
+  </div>
+
+  <ul class="tw-nav-links">
+    {% set routes = {
+      'Home':'/',
+      'Crypto':'/crypto',
+      'Stocks':'/stocks',
+      'E-Commerce':'/ecommerce',
+      'Entertainment':'/entertainment',
+      'Sports':'/sports'
+    } %}
+    {% for name, path in routes.items() %}
+      <li>
+        <a href="{{ path }}"
+           class="{% if request.path == path %}active{% endif %}">
+           {{ name }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

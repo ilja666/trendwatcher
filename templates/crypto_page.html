@@ -7,9 +7,15 @@
     <button onclick="refreshData('crypto', 'crypto-grid')" class="refresh-btn">🔄 Refresh Data</button>
   </div>
 
+  <!-- Search Filter -->
+  <div style="margin-bottom: 1rem;">
+    <input id="filter" type="text" placeholder="Search crypto trends…"
+           style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--fg);" />
+  </div>
+
   <div class="crypto-grid" id="crypto-grid">
     {% for coin in coins %}
-      <div class="crypto-card">
+      <div class="crypto-card" data-item data-name="{{ coin.name }} {{ coin.symbol }}">
         <div class="crypto-header">
           <img src="{{ coin.thumb }}" alt="{{ coin.name }}" class="crypto-icon" onerror="this.src='{{ url_for('static', filename='placeholder.jpg') }}'">
           <div>
@@ -28,12 +34,59 @@
           </div>
           <span class="trend-badge">[TRENDING]</span>
         </div>
+
+        <!-- Vote UI -->
+        <div class="vote-box" data-item="{{ coin.symbol }}" data-cat="crypto" style="display: flex; align-items: center; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+          <button class="vote-btn up" style="background: none; border: none; cursor: pointer; font-size: 1.2em;">👍</button>
+          <span class="vote-score" style="font-weight: 600; min-width: 30px; text-align: center;">0</span>
+          <button class="vote-btn down" style="background: none; border: none; cursor: pointer; font-size: 1.2em;">👎</button>
+        </div>
       </div>
     {% endfor %}
   </div>
+
+  <!-- Search Filter Script -->
+  <script>
+    const box = document.getElementById('filter');
+    box?.addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll('[data-item]').forEach(el => {
+        if (el.classList.contains('crypto-card')) {
+          const text = (el.getAttribute('data-name') || el.textContent).toLowerCase();
+          el.style.display = text.includes(q) ? '' : 'none';
+        }
+      });
+    });
+
+    // Vote functionality
+    document.querySelectorAll('.vote-box').forEach(box => {
+      box.addEventListener('click', async e => {
+        const btn = e.target.closest('.vote-btn');
+        if (!btn) return;
+        const dir = btn.classList.contains('up') ? 'up' : 'down';
+        const id = box.dataset.item;
+        const cat = box.dataset.cat;
+        const scoreEl = box.querySelector('.vote-score');
+
+        try {
+          const res = await fetch('/api/vote', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({category: cat, id: id, direction: dir})
+          });
+          const j = await res.json();
+          if (j.ok) scoreEl.textContent = j.score;
+        } catch (err) {
+          console.error('Vote error:', err);
+        }
+      });
+    });
+  </script>
 {% endblock %}
 
 {% block sidebar %}
+  {% include "partials/sidebar_gainers.html" %}
+
   <div class="panel glow">
     <h4>💜 Cyberpunk Mode</h4>
     <p>Real-time crypto data from CoinGecko API.</p>

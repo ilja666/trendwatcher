@@ -1,0 +1,23 @@
+<div class="panel">
+  <h3>📈 Top Gainers</h3>
+  <ul class="gainers-list">
+    {% for g in gainers[:5] %}
+      <li>
+        <span class="symbol">{{ g.symbol }}</span>
+        <span class="change pos">{{ g.change }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="panel">
+  <h3>📉 Top Losers</h3>
+  <ul class="losers-list">
+    {% for l in losers[:5] %}
+      <li>
+        <span class="symbol">{{ l.symbol }}</span>
+        <span class="change neg">{{ l.change }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+</div>

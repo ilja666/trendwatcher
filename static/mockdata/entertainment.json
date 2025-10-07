@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Dune: Part Three",
+    "type": "Movie",
+    "category": "Sci-Fi",
+    "popularity": 98,
+    "platform": "Cinema",
+    "rating": 8.9,
+    "image": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400",
+    "description": "Epic conclusion to Denis Villeneuve's sci-fi masterpiece."
+  },
+  {
+    "title": "The Last of Us S2",
+    "type": "TV Series",
+    "category": "Drama/Action",
+    "popularity": 95,
+    "platform": "HBO Max",
+    "rating": 9.2,
+    "image": "https://images.unsplash.com/photo-1574267432644-f74f8ec55186?w=400",
+    "description": "Post-apocalyptic drama returns with intense second season."
+  },
+  {
+    "title": "GTA VI Trailer",
+    "type": "Gaming",
+    "category": "Action/Adventure",
+    "popularity": 92,
+    "platform": "YouTube",
+    "rating": 9.8,
+    "image": "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400",
+    "description": "Rockstar unveils highly anticipated Vice City return."
+  },
+  {
+    "title": "Taylor Swift Concert Film",
+    "type": "Music/Concert",
+    "category": "Pop",
+    "popularity": 89,
+    "platform": "Disney+",
+    "rating": 8.7,
+    "image": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400",
+    "description": "Eras Tour documentary breaks streaming records."
+  },
+  {
+    "title": "Oppenheimer Director's Cut",
+    "type": "Movie",
+    "category": "Biography/Drama",
+    "popularity": 86,
+    "platform": "Peacock",
+    "rating": 9.1,
+    "image": "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400",
+    "description": "Extended edition adds 45 minutes of new footage."
+  },
+  {
+    "title": "One Piece Live Action S2",
+    "type": "TV Series",
+    "category": "Adventure/Fantasy",
+    "popularity": 84,
+    "platform": "Netflix",
+    "rating": 8.5,
+    "image": "https://images.unsplash.com/photo-1594908900066-3f47337549d8?w=400",
+    "description": "Anime adaptation continues Grand Line adventures."
+  },
+  {
+    "title": "Stranger Things Finale",
+    "type": "TV Series",
+    "category": "Horror/Sci-Fi",
+    "popularity": 75,
+    "platform": "Netflix",
+    "rating": 8.9,
+    "image": "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=400",
+    "description": "Beloved series concludes epic battle against Upside Down."
+  }
+]

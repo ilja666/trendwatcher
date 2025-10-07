@@ -7,28 +7,54 @@
     <button onclick="refreshData('stocks', 'stocks-table')" class="refresh-btn">🔄 Refresh Data</button>
   </div>
 
-  <div class="stocks-table" id="stocks-table">
+  <!-- Search Filter -->
+  <div style="margin-bottom: 1rem;">
+    <input id="filter" type="text" placeholder="Search stocks…"
+           style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--fg);" />
+  </div>
+
+  <div class="articles-grid" id="stocks-table">
     {% for stock in stocks %}
-      <div class="stock-row {{ 'gainer' if stock.trend_type == 'gainer' else 'loser' }}">
-        <div class="stock-symbol">{{ stock.symbol }}</div>
-        <div class="stock-price">${{ "%.2f"|format(stock.price|float) }}</div>
-        <div class="stock-change {{ 'pos' if stock.trend_type == 'gainer' else 'neg' }}">
-          {{ stock.change_percentage }}
+      <article data-item data-name="{{ stock.name }} {{ stock.symbol }}" class="article-card">
+        <img src="{{ stock.image or stock.get('thumb', url_for('static', filename='placeholder.jpg')) }}"
+             alt="{{ stock.name }}"
+             class="article-image"
+             loading="lazy"
+             onerror="this.src='{{ url_for('static', filename='placeholder.jpg') }}'">
+        <div class="article-content">
+          <h2 class="article-title">{{ stock.name or stock.symbol }}</h2>
+          <p class="article-meta">{{ stock.symbol }} · ${{ "%.2f"|format(stock.price|float) }}</p>
+          <p class="article-description">{{ stock.description or 'Stock market data' }}</p>
+          <div class="article-stats">
+            <span class="stat-badge {% if stock.change|float > 0 %}pos{% else %}neg{% endif %}">
+              {{ stock.change }}%
+            </span>
+            <span class="stat-label">Vol: {{ stock.volume }}</span>
+          </div>
         </div>
-        <div class="stock-volume">Vol: {{ stock.volume|int|string|batch(3,'.')|join(',') }}</div>
-      </div>
+      </article>
     {% endfor %}
   </div>
+
+  <!-- Search & Vote Scripts -->
+  <script>
+    // Search filter
+    const box = document.getElementById('filter');
+    box?.addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll('[data-item]').forEach(el => {
+        const text = (el.getAttribute('data-name') || el.textContent).toLowerCase();
+        el.style.display = text.includes(q) ? '' : 'none';
+      });
+    });
+  </script>
 {% endblock %}
 
 {% block sidebar %}
+  {% include "partials/sidebar_gainers.html" %}
+
   <div class="panel">
     <h4>📊 Market Status</h4>
     <p>Real-time data from Alpha Vantage API.</p>
-  </div>
-
-  <div class="panel">
-    <h4>🎯 Top Movers</h4>
-    <p>Gainers and losers updated live.</p>
   </div>
 {% endblock %}

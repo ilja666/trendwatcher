@@ -628,3 +628,99 @@ a {
   color: #fff;
   border-color: #d97706;
 }
+
+/* ========== ARTICLE CARDS ========== */
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.article-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.article-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.article-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background: #f3f4f6;
+}
+
+.article-content {
+  padding: 16px;
+}
+
+.article-title {
+  font-size: 1.25em;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+}
+
+.article-meta {
+  font-size: 0.9em;
+  color: var(--muted);
+  margin: 0 0 12px 0;
+}
+
+.article-description {
+  font-size: 0.95em;
+  line-height: 1.5;
+  color: var(--fg);
+  margin: 0 0 12px 0;
+}
+
+.article-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.stat-badge {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+
+.stat-badge.pos {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.stat-badge.neg {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.stat-label {
+  font-size: 0.85em;
+  color: var(--muted);
+}
+
+/* Image fallback for broken/missing images */
+img[src=""], img:not([src]) {
+  background: #e5e7eb url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="400" height="300" fill="%23e5e7eb"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%239ca3af" text-anchor="middle">No Image</text></svg>') center/contain no-repeat;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .articles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .article-image {
+    height: 180px;
+  }
+}

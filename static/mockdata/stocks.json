@@ -1,0 +1,65 @@
+[
+  {
+    "symbol": "TSLA",
+    "name": "Tesla Inc.",
+    "price": 238.23,
+    "change": 5.3,
+    "volume": "145M",
+    "image": "https://logo.clearbit.com/tesla.com",
+    "description": "Tesla shares jump after quarterly results beat expectations."
+  },
+  {
+    "symbol": "AAPL",
+    "name": "Apple Inc.",
+    "price": 178.11,
+    "change": -1.4,
+    "volume": "78M",
+    "image": "https://logo.clearbit.com/apple.com",
+    "description": "Apple slips amid supply chain concerns and market rotation."
+  },
+  {
+    "symbol": "NVDA",
+    "name": "NVIDIA Corporation",
+    "price": 512.76,
+    "change": 12.8,
+    "volume": "198M",
+    "image": "https://logo.clearbit.com/nvidia.com",
+    "description": "NVIDIA soars on AI chip demand and datacenter growth."
+  },
+  {
+    "symbol": "MSFT",
+    "name": "Microsoft Corporation",
+    "price": 389.45,
+    "change": 3.2,
+    "volume": "42M",
+    "image": "https://logo.clearbit.com/microsoft.com",
+    "description": "Microsoft gains on cloud revenue surge and AI integration."
+  },
+  {
+    "symbol": "AMZN",
+    "name": "Amazon.com Inc.",
+    "price": 156.88,
+    "change": -2.7,
+    "volume": "65M",
+    "image": "https://logo.clearbit.com/amazon.com",
+    "description": "Amazon dips after mixed e-commerce performance report."
+  },
+  {
+    "symbol": "META",
+    "name": "Meta Platforms Inc.",
+    "price": 445.32,
+    "change": 6.9,
+    "volume": "34M",
+    "image": "https://logo.clearbit.com/meta.com",
+    "description": "Meta rallies on strong ad revenue and metaverse progress."
+  },
+  {
+    "symbol": "GOOGL",
+    "name": "Alphabet Inc.",
+    "price": 142.67,
+    "change": 1.8,
+    "volume": "28M",
+    "image": "https://logo.clearbit.com/google.com",
+    "description": "Google parent Alphabet sees modest gains on search growth."
+  }
+]

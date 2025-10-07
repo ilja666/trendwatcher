@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Champions League Final",
+    "sport": "Football",
+    "league": "UEFA Champions League",
+    "popularity": 98,
+    "status": "Upcoming",
+    "engagement": "2.4M mentions",
+    "image": "https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=400",
+    "description": "European football's biggest night approaches."
+  },
+  {
+    "title": "NBA Finals Game 7",
+    "sport": "Basketball",
+    "league": "NBA",
+    "popularity": 95,
+    "status": "Live",
+    "engagement": "1.8M mentions",
+    "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400",
+    "description": "Championship on the line in decisive final game."
+  },
+  {
+    "title": "F1 Monaco Grand Prix",
+    "sport": "Formula 1",
+    "league": "FIA F1",
+    "popularity": 92,
+    "status": "Live",
+    "engagement": "1.5M mentions",
+    "image": "https://images.unsplash.com/photo-1541443131876-44b03de101c5?w=400",
+    "description": "Racing's most prestigious street circuit event."
+  },
+  {
+    "title": "Wimbledon Finals",
+    "sport": "Tennis",
+    "league": "ATP/WTA",
+    "popularity": 88,
+    "status": "Upcoming",
+    "engagement": "987K mentions",
+    "image": "https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=400",
+    "description": "Tennis legends battle for Grand Slam glory."
+  },
+  {
+    "title": "Super Bowl LVIII",
+    "sport": "American Football",
+    "league": "NFL",
+    "popularity": 86,
+    "status": "Highlights",
+    "engagement": "3.2M mentions",
+    "image": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=400",
+    "description": "America's biggest sporting event delivers drama."
+  },
+  {
+    "title": "World Cup Qualifiers",
+    "sport": "Football",
+    "league": "FIFA",
+    "popularity": 84,
+    "status": "Live",
+    "engagement": "1.2M mentions",
+    "image": "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=400",
+    "description": "Nations compete for coveted tournament spots."
+  },
+  {
+    "title": "Premier League Derby",
+    "sport": "Football",
+    "league": "EPL",
+    "popularity": 75,
+    "status": "Live",
+    "engagement": "1.1M mentions",
+    "image": "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=400",
+    "description": "Historic rivals clash in crucial league match."
+  }
+]

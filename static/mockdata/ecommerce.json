@@ -1,0 +1,58 @@
+[
+  {
+    "keyword": "AI Gadgets",
+    "category": "Technology",
+    "value": 95,
+    "growth": "+234%",
+    "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400",
+    "description": "AI-powered devices dominate consumer tech searches."
+  },
+  {
+    "keyword": "Sustainable Fashion",
+    "category": "Clothing",
+    "value": 88,
+    "growth": "+156%",
+    "image": "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400",
+    "description": "Eco-friendly clothing brands see explosive growth."
+  },
+  {
+    "keyword": "Smart Home Devices",
+    "category": "Electronics",
+    "value": 82,
+    "growth": "+189%",
+    "image": "https://images.unsplash.com/photo-1558002038-1055907df827?w=400",
+    "description": "Home automation products trending across all demographics."
+  },
+  {
+    "keyword": "Fitness Trackers",
+    "category": "Health & Fitness",
+    "value": 76,
+    "growth": "+98%",
+    "image": "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=400",
+    "description": "Wearable health tech continues upward trajectory."
+  },
+  {
+    "keyword": "Wireless Earbuds",
+    "category": "Audio",
+    "value": 73,
+    "growth": "+145%",
+    "image": "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400",
+    "description": "Premium audio accessories maintain strong demand."
+  },
+  {
+    "keyword": "Standing Desks",
+    "category": "Office",
+    "value": 68,
+    "growth": "+112%",
+    "image": "https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=400",
+    "description": "Remote work fuels ergonomic furniture sales."
+  },
+  {
+    "keyword": "Air Purifiers",
+    "category": "Home",
+    "value": 64,
+    "growth": "+87%",
+    "image": "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400",
+    "description": "Health-conscious consumers drive air quality products."
+  }
+]

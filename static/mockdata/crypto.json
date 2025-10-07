@@ -1,0 +1,65 @@
+[
+  {
+    "symbol": "BTC",
+    "name": "Bitcoin",
+    "price": 68234.56,
+    "change": 12.4,
+    "market_cap_rank": 1,
+    "image": "https://assets.coingecko.com/coins/images/1/small/bitcoin.png",
+    "description": "Bitcoin surges past $68K as institutional adoption accelerates."
+  },
+  {
+    "symbol": "ETH",
+    "name": "Ethereum",
+    "price": 3456.78,
+    "change": 8.2,
+    "market_cap_rank": 2,
+    "image": "https://assets.coingecko.com/coins/images/279/small/ethereum.png",
+    "description": "Ethereum leads DeFi growth with record smart contract activity."
+  },
+  {
+    "symbol": "SOL",
+    "name": "Solana",
+    "price": 145.32,
+    "change": 15.7,
+    "market_cap_rank": 6,
+    "image": "https://assets.coingecko.com/coins/images/4128/small/solana.png",
+    "description": "Solana ecosystem expands with new NFT marketplace launch."
+  },
+  {
+    "symbol": "BNB",
+    "name": "BNB",
+    "price": 512.44,
+    "change": -2.1,
+    "market_cap_rank": 3,
+    "image": "https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png",
+    "description": "Binance Coin consolidates after reaching new yearly highs."
+  },
+  {
+    "symbol": "XRP",
+    "name": "Ripple",
+    "price": 0.87,
+    "change": 5.3,
+    "market_cap_rank": 7,
+    "image": "https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png",
+    "description": "XRP rallies on positive regulatory developments."
+  },
+  {
+    "symbol": "ADA",
+    "name": "Cardano",
+    "price": 0.58,
+    "change": -3.4,
+    "market_cap_rank": 9,
+    "image": "https://assets.coingecko.com/coins/images/975/small/cardano.png",
+    "description": "Cardano prepares for major network upgrade next quarter."
+  },
+  {
+    "symbol": "DOGE",
+    "name": "Dogecoin",
+    "price": 0.12,
+    "change": -8.5,
+    "market_cap_rank": 10,
+    "image": "https://assets.coingecko.com/coins/images/5/small/dogecoin.png",
+    "description": "Dogecoin faces selling pressure amid meme coin rotation."
+  }
+]

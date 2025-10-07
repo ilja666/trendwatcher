@@ -24,6 +24,28 @@ GA_TRACKING_ID = os.environ.get('GA_TRACKING_ID', 'G-HP85ZJG199')
 VOTES_FILE = "data/votes.json"
 _vote_lock = threading.Lock()
 
+# ========== MOCKDATA HELPER ==========
+
+def load_mock(category):
+    """
+    Load mock data from JSON file as fallback.
+
+    Args:
+        category (str): Category name (crypto, stocks, ecommerce, entertainment, sports)
+
+    Returns:
+        list: Mock data or empty list if file not found
+    """
+    path = f"static/mockdata/{category}.json"
+    if os.path.exists(path):
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Error loading mock data for {category}: {e}")
+            return []
+    return []
+
 # Helper functions voor demo data
 def get_demo_gainers():
     """Top gainers voor sidebar"""
@@ -96,82 +118,123 @@ def home():
 @app.route('/crypto')
 def crypto():
     """Crypto page - Cyberpunk theme"""
+    # Try API first, fallback to mock data
     coins = get_trending_crypto()
-    if not coins:
-        coins = [{"name": "Demo Mode", "symbol": "N/A", "market_cap_rank": "N/A", "score": 0, "thumb": ""}]
+    if not coins or len(coins) == 0:
+        coins = load_mock('crypto')
+
+    # Calculate gainers, losers, trending from coins data
+    gainers = sorted(coins, key=lambda x: x.get('change', 0), reverse=True)[:5] if coins else get_demo_gainers()
+    losers = sorted(coins, key=lambda x: x.get('change', 0))[:5] if coins else get_demo_losers()
+    trending = coins[:5] if coins else []
+
     return render_template(
         'crypto_page.html',
         theme='cyberpunk',
         coins=coins,
-        gainers=get_demo_gainers(),
-        losers=get_demo_losers(),
+        articles=coins,  # For article layout
+        gainers=gainers,
+        losers=losers,
+        trending=trending,
         GA_ID=GA_TRACKING_ID
     )
 
 @app.route('/stocks')
 def stocks():
     """Stocks page - Finance theme"""
+    # Try API first, fallback to mock data
     stocks_data = get_trending_stocks()
-    if not stocks_data:
-        stocks_data = [{"symbol": "Demo", "price": "0", "change_percentage": "0%", "volume": "0", "trend_type": "gainer"}]
+    if not stocks_data or len(stocks_data) == 0:
+        stocks_data = load_mock('stocks')
+
+    # Calculate gainers, losers, trending
+    gainers = sorted(stocks_data, key=lambda x: float(x.get('change', 0)), reverse=True)[:5] if stocks_data else get_demo_gainers()
+    losers = sorted(stocks_data, key=lambda x: float(x.get('change', 0)))[:5] if stocks_data else get_demo_losers()
+    trending = stocks_data[:5] if stocks_data else []
+
     return render_template(
         'stocks_page.html',
         theme='finance',
         stocks=stocks_data,
-        gainers=get_demo_gainers(),
-        losers=get_demo_losers(),
+        articles=stocks_data,  # For article layout
+        gainers=gainers,
+        losers=losers,
+        trending=trending,
         GA_ID=GA_TRACKING_ID
     )
 
 @app.route('/ecommerce')
 def ecommerce():
     """E-commerce page - Shop theme"""
+    # Try API first, fallback to mock data
     products = get_trending_ecommerce()
-    if not products:
-        products = [{"keyword": "Demo Product", "value": 0, "category": "Demo"}]
+    if not products or len(products) == 0:
+        products = load_mock('ecommerce')
+
+    # Calculate gainers (by growth %), trending
+    gainers = sorted(products, key=lambda x: int(x.get('growth', '0%').replace('%', '').replace('+', '')), reverse=True)[:5] if products else get_demo_gainers()
+    losers = get_demo_losers()  # E-commerce doesn't have losers typically
+    trending = products[:5] if products else []
+
     return render_template(
         'ecommerce_page.html',
         theme='shop',
         products=products,
-        gainers=get_demo_gainers(),
-        losers=get_demo_losers(),
+        articles=products,  # For article layout
+        gainers=gainers,
+        losers=losers,
+        trending=trending,
         GA_ID=GA_TRACKING_ID
     )
 
 @app.route('/entertainment')
 def entertainment():
     """Entertainment page - Magazine theme"""
+    # Try API first, fallback to mock data
     items = get_trending_entertainment()
-    if not items:
-        items = [{"title": "Demo Content", "type": "Demo", "platform": "Demo", "rating": 0, "popularity": 0}]
+    if not items or len(items) == 0:
+        items = load_mock('entertainment')
 
     # Prep data for sidebar
-    trending_items = items[:5]  # First 5 items
-    top_rated_items = sorted(items, key=lambda x: x.get('rating', 0), reverse=True)[:5]
+    trending_items = sorted(items, key=lambda x: x.get('popularity', 0), reverse=True)[:5] if items else []
+    top_rated_items = sorted(items, key=lambda x: x.get('rating', 0), reverse=True)[:5] if items else []
+    gainers = trending_items  # Use popularity as "gainers"
+    losers = get_demo_losers()
 
     return render_template(
         'entertainment_page.html',
         theme='magazine',
         items=items,
+        articles=items,  # For article layout
         trending_items=trending_items,
         top_rated_items=top_rated_items,
-        gainers=get_demo_gainers(),
-        losers=get_demo_losers(),
+        gainers=gainers,
+        losers=losers,
+        trending=trending_items,
         GA_ID=GA_TRACKING_ID
     )
 
 @app.route('/sports')
 def sports():
     """Sports page - Sports theme"""
+    # Try API first, fallback to mock data
     matches = get_trending_sports()
-    if not matches:
-        matches = [{"title": "Demo Match", "league": "Demo", "status": "Live", "engagement": "0"}]
+    if not matches or len(matches) == 0:
+        matches = load_mock('sports')
+
+    # Calculate trending and gainers (by popularity)
+    trending = sorted(matches, key=lambda x: x.get('popularity', 0), reverse=True)[:5] if matches else []
+    gainers = trending  # Use popularity as "gainers"
+    losers = get_demo_losers()
+
     return render_template(
         'sports_page.html',
         theme='sports',
         matches=matches,
-        gainers=get_demo_gainers(),
-        losers=get_demo_losers(),
+        articles=matches,  # For article layout
+        gainers=gainers,
+        losers=losers,
+        trending=trending,
         GA_ID=GA_TRACKING_ID
     )
 

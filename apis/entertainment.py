@@ -32,7 +32,7 @@ def get_trending_entertainment():
             return youtube_data
 
     # Fallback naar demo data
-    try_old:
+    try:
         # MVP: Trending entertainment (statisch voor demo)
         # In productie: vervang met YouTube API, TMDb, etc.
         trending_items = [

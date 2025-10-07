@@ -30,7 +30,7 @@ def get_trending_sports():
         return live_data
 
     # Fallback naar demo data als API niet werkt
-    try_old:
+    try:
         # MVP: Trending sports (statisch voor demo)
         # In productie: vervang met ESPN API, TheSportsDB, etc.
         trending_items = [

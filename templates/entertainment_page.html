@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Entertainment — TrendWatcher{% endblock %}
+
+{% block content %}
+<h1 class="section-title">🎬 ENTERTAINMENT TRENDS</h1>
+
+<div class="grid">
+  {% for item in items %}
+    <div class="card">
+      <img src="{{ url_for('static', filename='placeholder.jpg') }}" alt="{{ item.title }}">
+      <h3>{{ item.title }}</h3>
+      <p><strong>Type:</strong> {{ item.type }}</p>
+      <p><strong>Platform:</strong> {{ item.platform }}</p>
+      <div class="stats-row">
+        <span><strong>Rating:</strong> {{ item.rating }}/10</span>
+        <span><strong>Popularity:</strong> {{ item.popularity }}/100</span>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div class="panel">
+  <h2>🎥 Trending Now</h2>
+  <ul class="trend-list">
+    {% for item in items[:5] %}
+      <li>
+        <strong>{{ item.title }}</strong>
+        <br><small>{{ item.type }} • {{ item.platform }}</small>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="panel">
+  <h2>📊 Top Rated</h2>
+  <ul class="trend-list">
+    {% for item in items|sort(attribute='rating', reverse=True)[:5] %}
+      <li>
+        <strong>{{ item.title }}</strong>
+        <br><small>Rating: {{ item.rating }}/10</small>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

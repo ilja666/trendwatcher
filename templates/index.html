@@ -3,9 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrendWatcher - Multi-Market Trending Dashboard</title>
+    <title>TrendWatcher - Multi-Market Intelligence</title>
     <style>
-        /* Basis styling */
+        /* Cyberpunk/Film Noir Theme */
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151934;
+            --bg-card: #1a1f3a;
+            --border-color: #2d3561;
+            --text-primary: #e0e7ff;
+            --text-secondary: #94a3b8;
+            --accent-purple: #8b5cf6;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --success: #10b981;
+            --danger: #ef4444;
+            --glow-purple: rgba(139, 92, 246, 0.5);
+            --glow-blue: rgba(59, 130, 246, 0.5);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,110 +29,159 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Courier New', monospace;
+            background: var(--bg-primary);
+            background-image:
+                radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
             min-height: 100vh;
             padding: 20px;
+            color: var(--text-primary);
+        }
+
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 9999;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
+        /* Header */
         header {
             text-align: center;
-            color: white;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
         }
 
         h1 {
-            font-size: 3em;
+            font-size: 3.5em;
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px var(--glow-purple);
             margin-bottom: 10px;
         }
 
         .subtitle {
-            font-size: 1.2em;
-            opacity: 0.9;
+            font-size: 1em;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
         /* Tab Navigation */
         .tab-navigation {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 15px;
             margin-bottom: 30px;
             flex-wrap: wrap;
         }
 
         .tab-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 12px 30px;
-            font-size: 1.1em;
-            border-radius: 50px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 12px 24px;
+            font-size: 0.9em;
+            font-family: 'Courier New', monospace;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             font-weight: 600;
         }
 
-        .tab-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tab-btn:hover:not(:disabled) {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 20px var(--glow-purple);
         }
 
         .tab-btn.active {
-            background: white;
-            color: #667eea;
-            border-color: white;
+            border-color: var(--accent-purple);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2));
+            box-shadow: 0 0 30px var(--glow-purple), inset 0 0 20px var(--glow-purple);
         }
 
         .tab-btn:disabled {
-            opacity: 0.5;
+            opacity: 0.3;
             cursor: not-allowed;
         }
 
         /* Refresh button */
         .refresh-btn {
-            background: white;
-            color: #667eea;
-            border: none;
-            padding: 12px 25px;
-            font-size: 1em;
-            border-radius: 50px;
+            background: var(--bg-card);
+            color: var(--accent-cyan);
+            border: 1px solid var(--accent-cyan);
+            padding: 12px 30px;
+            font-size: 0.9em;
+            font-family: 'Courier New', monospace;
             cursor: pointer;
             font-weight: bold;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            margin: 0 auto;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 auto 30px;
             display: block;
+            transition: all 0.3s ease;
         }
 
         .refresh-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .refresh-btn:active {
-            transform: scale(0.98);
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+            box-shadow: 0 0 20px var(--accent-cyan);
         }
 
         /* Loading spinner */
         .loading {
             text-align: center;
-            color: white;
-            font-size: 1.5em;
+            color: var(--accent-cyan);
+            font-size: 1.2em;
             margin: 50px 0;
+            letter-spacing: 2px;
         }
 
         .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid white;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--accent-cyan);
             border-radius: 50%;
             width: 50px;
             height: 50px;
             animation: spin 1s linear infinite;
             margin: 20px auto;
+            box-shadow: 0 0 20px var(--accent-cyan);
         }
 
         @keyframes spin {
@@ -127,53 +192,75 @@
         /* Cards grid */
         .items-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 20px;
             margin-top: 30px;
         }
 
         .item-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-purple), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
         }
 
         .item-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 30px var(--glow-purple);
+            transform: translateY(-2px);
+        }
+
+        .item-card:hover::before {
+            transform: translateX(100%);
         }
 
         .item-header {
             display: flex;
             align-items: center;
             margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .item-icon {
             width: 50px;
             height: 50px;
-            border-radius: 50%;
+            border-radius: 4px;
             margin-right: 15px;
+            border: 1px solid var(--border-color);
         }
 
         .item-info h2 {
-            font-size: 1.5em;
-            color: #333;
+            font-size: 1.3em;
+            color: var(--text-primary);
             margin-bottom: 5px;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         .item-symbol {
-            color: #666;
+            color: var(--accent-cyan);
             text-transform: uppercase;
-            font-weight: bold;
-            font-size: 0.9em;
+            font-weight: 600;
+            font-size: 0.85em;
+            letter-spacing: 1px;
         }
 
         .item-stats {
-            border-top: 1px solid #eee;
-            padding-top: 15px;
             margin-top: 15px;
         }
 
@@ -181,54 +268,71 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 10px;
-        }
-
-        .stat-label {
-            color: #666;
             font-size: 0.9em;
         }
 
+        .stat-label {
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+        }
+
         .stat-value {
-            color: #333;
-            font-weight: bold;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
         }
 
         .stat-value.positive {
-            color: #10b981;
+            color: var(--success);
+            text-shadow: 0 0 10px var(--success);
         }
 
         .stat-value.negative {
-            color: #ef4444;
+            color: var(--danger);
+            text-shadow: 0 0 10px var(--danger);
         }
 
         /* Badge for trend type */
         .trend-badge {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            font-weight: bold;
+            padding: 6px 12px;
+            font-size: 0.75em;
+            font-weight: 700;
             margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid;
         }
 
         .trend-badge.gainer {
-            background: #d1fae5;
-            color: #065f46;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-color: var(--success);
         }
 
         .trend-badge.loser {
-            background: #fee2e2;
-            color: #991b1b;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .trend-badge.trending {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--accent-purple);
+            border-color: var(--accent-purple);
         }
 
         /* Error message */
         .error {
-            background: #ff4757;
-            color: white;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
             padding: 20px;
-            border-radius: 10px;
+            border: 1px solid var(--danger);
             text-align: center;
             margin: 20px 0;
+            letter-spacing: 1px;
         }
 
         /* Tab content */
@@ -238,43 +342,66 @@
 
         .tab-content.active {
             display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glitch effect voor header */
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        h1:hover {
+            animation: glitch 0.3s ease;
         }
     </style>
 </head>
 <body>
+    <!-- Scanline overlay -->
+    <div class="scanline"></div>
+
     <div class="container">
         <!-- Header -->
         <header>
-            <h1>📊 TrendWatcher</h1>
-            <p class="subtitle">Live Multi-Market Trending Data</p>
+            <h1>▶ TRENDWATCHER ◀</h1>
+            <p class="subtitle">// MULTI-MARKET INTELLIGENCE SYSTEM //</p>
         </header>
 
         <!-- Tab Navigation -->
         <div class="tab-navigation">
             <button class="tab-btn active" onclick="switchTab('crypto')" id="tab-crypto">
-                💰 Crypto
+                [CRYPTO]
             </button>
             <button class="tab-btn" onclick="switchTab('stocks')" id="tab-stocks">
-                📈 Stocks
+                [STOCKS]
             </button>
-            <button class="tab-btn" disabled id="tab-ecommerce">
-                🛍️ E-commerce (Soon)
+            <button class="tab-btn" onclick="switchTab('ecommerce')" id="tab-ecommerce">
+                [E-COMMERCE]
             </button>
             <button class="tab-btn" disabled id="tab-entertainment">
-                🎬 Entertainment (Soon)
+                [ENTERTAINMENT]
             </button>
             <button class="tab-btn" disabled id="tab-sports">
-                ⚽ Sports (Soon)
+                [SPORTS]
             </button>
         </div>
 
         <!-- Refresh button -->
-        <button class="refresh-btn" onclick="refreshCurrentTab()">🔄 Data Verversen</button>
+        <button class="refresh-btn" onclick="refreshCurrentTab()">[ REFRESH DATA ]</button>
 
         <!-- Loading indicator -->
         <div id="loading" class="loading" style="display: none;">
             <div class="spinner"></div>
-            <p>Trending data laden...</p>
+            <p>> LOADING MARKET DATA...</p>
         </div>
 
         <!-- Error message -->
@@ -288,6 +415,11 @@
         <!-- Tab Content: Stocks -->
         <div id="content-stocks" class="tab-content">
             <div class="items-grid" id="stocks-grid"></div>
+        </div>
+
+        <!-- Tab Content: E-commerce -->
+        <div id="content-ecommerce" class="tab-content">
+            <div class="items-grid" id="ecommerce-grid"></div>
         </div>
     </div>
 
@@ -325,6 +457,8 @@
                 loadCryptoData();
             } else if (currentTab === 'stocks') {
                 loadStocksData();
+            } else if (currentTab === 'ecommerce') {
+                loadEcommerceData();
             }
         }
 
@@ -350,7 +484,7 @@
                 }
             } catch (error) {
                 hideLoading();
-                showError(`❌ Fout bij laden van crypto data: ${error.message}`);
+                showError(`[ERROR] Crypto data unavailable: ${error.message}`);
                 console.error('Error:', error);
             }
         }
@@ -377,7 +511,34 @@
                 }
             } catch (error) {
                 hideLoading();
-                showError(`❌ Fout bij laden van stocks data: ${error.message}`);
+                showError(`[ERROR] Stocks data unavailable: ${error.message}`);
+                console.error('Error:', error);
+            }
+        }
+
+        /**
+         * Laadt e-commerce trending data
+         */
+        async function loadEcommerceData() {
+            showLoading();
+            hideError();
+            document.getElementById('ecommerce-grid').innerHTML = '';
+
+            try {
+                const response = await fetch('/api/ecommerce/trending');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const result = await response.json();
+                hideLoading();
+
+                if (result.success && result.data && result.data.length > 0) {
+                    displayEcommerceData(result.data);
+                } else {
+                    throw new Error('Geen trending products gevonden');
+                }
+            } catch (error) {
+                hideLoading();
+                showError(`[ERROR] E-commerce data unavailable: ${error.message}`);
                 console.error('Error:', error);
             }
         }
@@ -396,7 +557,7 @@
                 card.innerHTML = `
                     <div class="item-header">
                         <img src="${coin.thumb}" alt="${coin.name}" class="item-icon"
-                             onerror="this.src='https://via.placeholder.com/50'">
+                             onerror="this.src='https://via.placeholder.com/50/1a1f3a/8b5cf6?text=${coin.symbol}'">
                         <div class="item-info">
                             <h2>${coin.name}</h2>
                             <div class="item-symbol">${coin.symbol}</div>
@@ -404,17 +565,18 @@
                     </div>
                     <div class="item-stats">
                         <div class="stat-row">
-                            <span class="stat-label">Market Cap Rank:</span>
+                            <span class="stat-label">MCap Rank</span>
                             <span class="stat-value">#${coin.market_cap_rank || 'N/A'}</span>
                         </div>
                         <div class="stat-row">
-                            <span class="stat-label">Trending Score:</span>
+                            <span class="stat-label">Score</span>
                             <span class="stat-value">${coin.score || 'N/A'}</span>
                         </div>
                         <div class="stat-row">
-                            <span class="stat-label">Trending Position:</span>
+                            <span class="stat-label">Position</span>
                             <span class="stat-value">#${index + 1}</span>
                         </div>
+                        <span class="trend-badge trending">[TRENDING]</span>
                     </div>
                 `;
 
@@ -439,7 +601,7 @@
 
                 card.innerHTML = `
                     <div class="item-header">
-                        <div class="item-icon" style="background: ${isPositive ? '#10b981' : '#ef4444'}; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2em;">
+                        <div class="item-icon" style="background: ${isPositive ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)'}; display: flex; align-items: center; justify-content: center; color: ${isPositive ? 'var(--success)' : 'var(--danger)'}; font-weight: bold; font-size: 1.2em; border-color: ${isPositive ? 'var(--success)' : 'var(--danger)'};">
                             ${stock.symbol.substring(0, 2)}
                         </div>
                         <div class="item-info">
@@ -449,20 +611,62 @@
                     </div>
                     <div class="item-stats">
                         <div class="stat-row">
-                            <span class="stat-label">Change:</span>
+                            <span class="stat-label">Change</span>
                             <span class="stat-value ${changeClass}">${stock.change_percentage}</span>
                         </div>
                         <div class="stat-row">
-                            <span class="stat-label">Amount:</span>
+                            <span class="stat-label">Amount</span>
                             <span class="stat-value ${changeClass}">$${parseFloat(stock.change_amount).toFixed(2)}</span>
                         </div>
                         <div class="stat-row">
-                            <span class="stat-label">Volume:</span>
+                            <span class="stat-label">Volume</span>
                             <span class="stat-value">${parseInt(stock.volume).toLocaleString()}</span>
                         </div>
                         <span class="trend-badge ${trendType}">
-                            ${trendType === 'gainer' ? '📈 Top Gainer' : '📉 Top Loser'}
+                            ${trendType === 'gainer' ? '[+GAINER]' : '[-LOSER]'}
                         </span>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        /**
+         * Toon e-commerce data
+         */
+        function displayEcommerceData(products) {
+            const container = document.getElementById('ecommerce-grid');
+            container.innerHTML = '';
+
+            products.forEach((product, index) => {
+                const card = document.createElement('div');
+                card.className = 'item-card';
+
+                card.innerHTML = `
+                    <div class="item-header">
+                        <div class="item-icon" style="background: rgba(139, 92, 246, 0.2); display: flex; align-items: center; justify-content: center; color: var(--accent-purple); font-weight: bold; font-size: 1.5em; border-color: var(--accent-purple);">
+                            🛍
+                        </div>
+                        <div class="item-info">
+                            <h2>${product.keyword}</h2>
+                            <div class="item-symbol">Search Term</div>
+                        </div>
+                    </div>
+                    <div class="item-stats">
+                        <div class="stat-row">
+                            <span class="stat-label">Interest</span>
+                            <span class="stat-value">${product.value}/100</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Category</span>
+                            <span class="stat-value">${product.category || 'General'}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Rank</span>
+                            <span class="stat-value">#${index + 1}</span>
+                        </div>
+                        <span class="trend-badge trending">[HOT]</span>
                     </div>
                 `;
 

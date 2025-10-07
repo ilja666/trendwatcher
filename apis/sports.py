@@ -21,13 +21,16 @@ def get_trending_sports():
         list: Lijst met trending sports items
         None: Als de data ophalen mislukt
     """
+    # Return None to force fallback to mockdata with images
+    return None
+
     # Probeer eerst TheSportsDB API
     live_data = get_thesportsdb_trending()
     if live_data and len(live_data) > 0:
         return live_data
 
     # Fallback naar demo data als API niet werkt
-    try:
+    try_old:
         # MVP: Trending sports (statisch voor demo)
         # In productie: vervang met ESPN API, TheSportsDB, etc.
         trending_items = [

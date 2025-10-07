@@ -7,36 +7,53 @@
     <button onclick="refreshData('sports', 'sports-table')" class="refresh-btn">🔄 Refresh Data</button>
   </div>
 
-  <table class="odds-table" id="sports-table">
-    <thead>
-      <tr>
-        <th>Event</th>
-        <th>League</th>
-        <th>Status</th>
-        <th>Engagement</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for match in matches %}
-        <tr>
-          <td><strong>{{ match.title }}</strong></td>
-          <td>{{ match.league }}</td>
-          <td><span class="status-badge {{ match.status|lower }}">{{ match.status }}</span></td>
-          <td>{{ match.engagement }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <!-- Search Filter -->
+  <div style="margin-bottom: 1rem;">
+    <input id="filter" type="text" placeholder="Search sports events…"
+           style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--fg);" />
+  </div>
+
+  <div class="articles-grid" id="sports-table">
+    {% for match in matches %}
+      <article data-item data-name="{{ match.title }} {{ match.league }}" class="article-card">
+        <img src="{{ match.image or url_for('static', filename='placeholder.svg') }}"
+             alt="{{ match.title }}"
+             class="article-image"
+             loading="lazy"
+             onerror="this.src='{{ url_for('static', filename='placeholder.svg') }}'">
+        <div class="article-content">
+          <h2 class="article-title">{{ match.title }}</h2>
+          <p class="article-meta">{{ match.sport }} · {{ match.league }}</p>
+          <p class="article-description">{{ match.description or 'Trending sports event' }}</p>
+          <div class="article-stats">
+            <span class="stat-badge {% if match.status == 'Live' %}pos{% else %}neg{% endif %}">
+              {{ match.status }}
+            </span>
+            <span class="stat-label">{{ match.engagement }}</span>
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+
+  <!-- Search Script -->
+  <script>
+    const box = document.getElementById('filter');
+    box?.addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll('[data-item]').forEach(el => {
+        const text = (el.getAttribute('data-name') || el.textContent).toLowerCase();
+        el.style.display = text.includes(q) ? '' : 'none';
+      });
+    });
+  </script>
 {% endblock %}
 
 {% block sidebar %}
+  {% include "partials/sidebar_gainers.html" %}
+
   <div class="panel">
     <h4>🟢 LIVE Events</h4>
     <p>Real-time sports trending data.</p>
-  </div>
-
-  <div class="panel">
-    <h4>⚡ Hot Matches</h4>
-    <p>Most engaged events right now.</p>
   </div>
 {% endblock %}

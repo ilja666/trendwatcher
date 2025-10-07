@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Bitcoin Surge Breaks Records",
+    "teaser": "Crypto market sees unprecedented growth as institutional adoption accelerates.",
+    "image": "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=600",
+    "category": "crypto"
+  },
+  {
+    "title": "AI Gadgets Dominate E-commerce",
+    "teaser": "Smart devices and AI-powered products lead consumer tech searches.",
+    "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600",
+    "category": "ecommerce"
+  },
+  {
+    "title": "Premier League Dramatiek",
+    "teaser": "Champions League final approaches with record-breaking viewership expected.",
+    "image": "https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=600",
+    "category": "sports"
+  },
+  {
+    "title": "Stock Market Volatility",
+    "teaser": "NVIDIA leads tech rally as AI chip demand surges across markets.",
+    "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600",
+    "category": "stocks"
+  },
+  {
+    "title": "YouTube Trending Explodes",
+    "teaser": "Viral content trends reshape entertainment consumption patterns.",
+    "image": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600",
+    "category": "entertainment"
+  }
+]

@@ -104,12 +104,16 @@ def _write_votes(votes_dict):
 @app.route('/')
 def home():
     """Homepage - Newspaper style"""
-    articles = get_demo_articles()
+    # Load home articles from mockdata
+    articles_data = load_mock('home')
+    if not articles_data or len(articles_data) == 0:
+        articles_data = [{"title": "Welcome", "teaser": "TrendWatcher", "image": "", "category": "home"}]
+
     return render_template(
         'home.html',
         theme='newspaper',
-        featured=articles[0],
-        articles=articles[1:],
+        featured=articles_data[0] if articles_data else {},
+        articles=articles_data[1:] if len(articles_data) > 1 else [],
         gainers=get_demo_gainers(),
         losers=get_demo_losers(),
         GA_ID=GA_TRACKING_ID

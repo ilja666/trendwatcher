@@ -22,6 +22,9 @@ def get_trending_entertainment():
         list: Lijst met trending entertainment items
         None: Als de data ophalen mislukt
     """
+    # Return None to force fallback to mockdata with images
+    return None
+
     # Probeer eerst YouTube API (als key beschikbaar)
     if YOUTUBE_API_KEY:
         youtube_data = get_youtube_trending()
@@ -29,7 +32,7 @@ def get_trending_entertainment():
             return youtube_data
 
     # Fallback naar demo data
-    try:
+    try_old:
         # MVP: Trending entertainment (statisch voor demo)
         # In productie: vervang met YouTube API, TMDb, etc.
         trending_items = [

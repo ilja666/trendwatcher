@@ -2,56 +2,47 @@
 {% block title %}TrendWatcher — Multi-Market Trends in één oogopslag{% endblock %}
 
 {% block content %}
-  <article class="hero">
-    <img src="{{ url_for('static', filename='placeholder.jpg') }}" alt="Featured trend" />
-    <h1>{{ featured.title }}</h1>
-    <p>{{ featured.teaser }}</p>
+  <h1 class="section-title" style="margin-bottom: 2rem;">📰 TrendWatcher Headlines</h1>
+
+  <article class="hero" style="margin-bottom: 2rem;">
+    <img src="{{ featured.image or url_for('static', filename='placeholder.svg') }}"
+         alt="Featured"
+         style="width: 100%; height: 400px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;"
+         loading="lazy"
+         onerror="this.src='{{ url_for('static', filename='placeholder.svg') }}'">
+    <h2 style="font-size: 2em; margin-bottom: 0.5rem;">{{ featured.title }}</h2>
+    <p style="font-size: 1.2em; color: var(--muted);">{{ featured.teaser }}</p>
   </article>
 
-  <section class="grid">
+  <div class="articles-grid">
     {% for article in articles %}
-      <article class="card">
-        <img src="{{ url_for('static', filename='placeholder.jpg') }}" alt="{{ article.title }}">
-        <h3>{{ article.title }}</h3>
-        <p>{{ article.teaser }}</p>
+      <article class="article-card">
+        <img src="{{ article.image or url_for('static', filename='placeholder.svg') }}"
+             alt="{{ article.title }}"
+             class="article-image"
+             loading="lazy"
+             onerror="this.src='{{ url_for('static', filename='placeholder.svg') }}'">
+        <div class="article-content">
+          <h3 class="article-title">{{ article.title }}</h3>
+          <p class="article-description">{{ article.teaser }}</p>
+          <span class="stat-badge pos">{{ article.category }}</span>
+        </div>
       </article>
     {% endfor %}
-  </section>
+  </div>
 {% endblock %}
 
 {% block sidebar %}
-  <div class="panel">
-    <h4>🔥 Top Gainers</h4>
-    <ul class="movers-list">
-      {% for item in gainers %}
-      <li>
-        <strong>{{ item.symbol }}</strong>
-        <span class="pos">{{ item.change }}</span>
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
-
-  <div class="panel">
-    <h4>📉 Top Losers</h4>
-    <ul class="movers-list">
-      {% for item in losers %}
-      <li>
-        <strong>{{ item.symbol }}</strong>
-        <span class="neg">{{ item.change }}</span>
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
+  {% include "partials/sidebar_gainers.html" %}
 
   <div class="panel">
     <h4>📊 Categories</h4>
-    <nav class="sidebar-nav">
-      <a href="/crypto">→ Crypto Trends</a>
-      <a href="/stocks">→ Stock Market</a>
-      <a href="/ecommerce">→ E-commerce Hot</a>
-      <a href="/entertainment">→ Entertainment</a>
-      <a href="/sports">→ Sports Live</a>
+    <nav class="sidebar-nav" style="display: flex; flex-direction: column; gap: 8px;">
+      <a href="/crypto" style="text-decoration: none;">→ Crypto Trends</a>
+      <a href="/stocks" style="text-decoration: none;">→ Stock Market</a>
+      <a href="/ecommerce" style="text-decoration: none;">→ E-commerce Hot</a>
+      <a href="/entertainment" style="text-decoration: none;">→ Entertainment</a>
+      <a href="/sports" style="text-decoration: none;">→ Sports Live</a>
     </nav>
   </div>
 {% endblock %}

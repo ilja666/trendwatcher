@@ -4,48 +4,62 @@
 
 {% block content %}
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-  <h1 class="section-title">ENTERTAINMENT TRENDS</h1>
+  <h1 class="section-title">🎬 ENTERTAINMENT TRENDS</h1>
   <button onclick="refreshData('entertainment', 'entertainment-grid')" class="refresh-btn">🔄 Refresh Data</button>
 </div>
 
-<div class="grid" id="entertainment-grid">
+<!-- Search Filter -->
+<div style="margin-bottom: 1rem;">
+  <input id="filter" type="text" placeholder="Search entertainment…"
+         style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--fg);" />
+</div>
+
+<div class="articles-grid" id="entertainment-grid">
   {% for item in items %}
-    <div class="card">
-      <img src="{{ url_for('static', filename='placeholder.jpg') }}" alt="{{ item.title }}">
-      <h3>{{ item.title }}</h3>
-      <p><strong>Type:</strong> {{ item.type }}</p>
-      <p><strong>Platform:</strong> {{ item.platform }}</p>
-      <div class="stats-row">
-        <span><strong>Rating:</strong> {{ item.rating }}/10</span>
-        <span><strong>Popularity:</strong> {{ item.popularity }}/100</span>
+    <article data-item data-name="{{ item.title }} {{ item.type }}" class="article-card">
+      <img src="{{ item.image or url_for('static', filename='placeholder.svg') }}"
+           alt="{{ item.title }}"
+           class="article-image"
+           loading="lazy"
+           onerror="this.src='{{ url_for('static', filename='placeholder.svg') }}'">
+      <div class="article-content">
+        <h2 class="article-title">{{ item.title }}</h2>
+        <p class="article-meta">{{ item.type }} · {{ item.platform }}</p>
+        <p class="article-description">{{ item.description or 'Trending entertainment content' }}</p>
+        <div class="article-stats">
+          <span class="stat-badge pos">⭐ {{ item.rating }}/10</span>
+          <span class="stat-label">Popularity: {{ item.popularity }}/100</span>
+        </div>
       </div>
-    </div>
+    </article>
   {% endfor %}
 </div>
+
+<!-- Search Script -->
+<script>
+  const box = document.getElementById('filter');
+  box?.addEventListener('input', e => {
+    const q = e.target.value.toLowerCase();
+    document.querySelectorAll('[data-item]').forEach(el => {
+      const text = (el.getAttribute('data-name') || el.textContent).toLowerCase();
+      el.style.display = text.includes(q) ? '' : 'none';
+    });
+  });
+</script>
 {% endblock %}
 
 {% block sidebar %}
-<div class="panel">
-  <h2>Trending Now</h2>
-  <ul class="trend-list">
-    {% for item in trending_items %}
-      <li>
-        <strong>{{ item.title }}</strong>
-        <br><small>{{ item.type }} • {{ item.platform }}</small>
-      </li>
-    {% endfor %}
-  </ul>
-</div>
+  {% include "partials/sidebar_gainers.html" %}
 
-<div class="panel">
-  <h2>Top Rated</h2>
-  <ul class="trend-list">
-    {% for item in top_rated_items %}
-      <li>
-        <strong>{{ item.title }}</strong>
-        <br><small>Rating: {{ item.rating }}/10</small>
-      </li>
-    {% endfor %}
-  </ul>
-</div>
+  <div class="panel">
+    <h4>🎬 Top Rated</h4>
+    <ul class="trend-list">
+      {% for item in top_rated_items %}
+        <li>
+          <strong>{{ item.title }}</strong>
+          <br><small>Rating: {{ item.rating }}/10</small>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
 {% endblock %}

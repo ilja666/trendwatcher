@@ -1,0 +1,58 @@
+"""
+TrendWatcher - Flask Webapp voor Crypto Trending Data
+======================================================
+Dit is de hoofd-applicatie die de Flask server runt.
+"""
+
+from flask import Flask, jsonify, render_template
+from apis.coingecko import get_trending_crypto
+
+# Flask app initialiseren
+app = Flask(__name__)
+
+# Route: Homepage met dashboard
+@app.route('/')
+@app.route('/dashboard')
+def dashboard():
+    """
+    Toont de dashboard pagina met trending crypto coins.
+    Rendert de index.html template.
+    """
+    return render_template('index.html')
+
+# Route: API endpoint voor trending crypto data
+@app.route('/crypto/trending')
+def crypto_trending():
+    """
+    Haalt trending crypto data op van CoinGecko API.
+    Returns:
+        JSON response met trending coins (naam, symbool, market_cap_rank)
+    """
+    try:
+        # Haal trending data op via de CoinGecko module
+        trending_data = get_trending_crypto()
+
+        # Check of we data hebben ontvangen
+        if trending_data is None:
+            return jsonify({
+                'error': 'Kon geen data ophalen van CoinGecko API'
+            }), 500
+
+        # Succesvol - stuur data terug
+        return jsonify({
+            'success': True,
+            'data': trending_data
+        })
+
+    except Exception as e:
+        # Error handling voor onverwachte fouten
+        return jsonify({
+            'error': f'Er ging iets mis: {str(e)}'
+        }), 500
+
+# Start de Flask development server
+if __name__ == '__main__':
+    print("🚀 TrendWatcher is gestart!")
+    print("📊 Dashboard: http://127.0.0.1:5000/dashboard")
+    print("🔗 API endpoint: http://127.0.0.1:5000/crypto/trending")
+    app.run(debug=True, host='0.0.0.0', port=5000)

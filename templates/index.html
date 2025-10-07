@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrendWatcher - Crypto Trending Dashboard</title>
+    <style>
+        /* Basis styling voor een moderne uitstraling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* Loading spinner */
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.5em;
+            margin: 50px 0;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Coin cards grid */
+        .coins-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .coin-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .coin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .coin-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .coin-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .coin-info h2 {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .coin-symbol {
+            color: #666;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .coin-stats {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .stat-value {
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* Error message */
+        .error {
+            background: #ff4757;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /* Refresh button */
+        .refresh-btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            font-weight: bold;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .refresh-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>📊 TrendWatcher</h1>
+            <p class="subtitle">Live Trending Cryptocurrency Data</p>
+        </header>
+
+        <!-- Refresh button -->
+        <button class="refresh-btn" onclick="loadTrendingData()">🔄 Data Verversen</button>
+
+        <!-- Loading indicator -->
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Trending data laden...</p>
+        </div>
+
+        <!-- Error message -->
+        <div id="error" class="error" style="display: none;"></div>
+
+        <!-- Coins grid -->
+        <div id="coins-container" class="coins-grid"></div>
+    </div>
+
+    <script>
+        /**
+         * Laadt trending crypto data van de API en toont deze op het dashboard
+         */
+        async function loadTrendingData() {
+            // Toon loading indicator
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('coins-container').innerHTML = '';
+
+            try {
+                // Fetch data van onze Flask API
+                const response = await fetch('/crypto/trending');
+
+                // Check of de response OK is
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // Parse JSON data
+                const result = await response.json();
+
+                // Verberg loading indicator
+                document.getElementById('loading').style.display = 'none';
+
+                // Check of we data hebben ontvangen
+                if (result.success && result.data && result.data.length > 0) {
+                    displayCoins(result.data);
+                } else {
+                    throw new Error('Geen trending coins gevonden');
+                }
+
+            } catch (error) {
+                // Toon error message
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').textContent =
+                    `❌ Fout bij laden van data: ${error.message}`;
+                console.error('Error:', error);
+            }
+        }
+
+        /**
+         * Toont de coins in een grid layout
+         * @param {Array} coins - Array met coin objecten
+         */
+        function displayCoins(coins) {
+            const container = document.getElementById('coins-container');
+            container.innerHTML = '';
+
+            // Maak een card voor elke coin
+            coins.forEach((coin, index) => {
+                const card = document.createElement('div');
+                card.className = 'coin-card';
+
+                card.innerHTML = `
+                    <div class="coin-header">
+                        <img src="${coin.thumb}" alt="${coin.name}" class="coin-icon"
+                             onerror="this.src='https://via.placeholder.com/50'">
+                        <div class="coin-info">
+                            <h2>${coin.name}</h2>
+                            <div class="coin-symbol">${coin.symbol}</div>
+                        </div>
+                    </div>
+                    <div class="coin-stats">
+                        <div class="stat-row">
+                            <span class="stat-label">Market Cap Rank:</span>
+                            <span class="stat-value">#${coin.market_cap_rank || 'N/A'}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Trending Score:</span>
+                            <span class="stat-value">${coin.score || 'N/A'}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Trending Position:</span>
+                            <span class="stat-value">#${index + 1}</span>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // Laad data automatisch wanneer de pagina laadt
+        window.addEventListener('DOMContentLoaded', loadTrendingData);
+    </script>
+</body>
+</html>

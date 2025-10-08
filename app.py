@@ -10,6 +10,7 @@ from apis.stocks import get_trending_stocks
 from apis.ecommerce import get_trending_ecommerce
 from apis.entertainment import get_trending_entertainment
 from apis.sports import get_trending_sports
+from apis.newsfeeds import get_articles
 from datetime import datetime
 import os
 import json
@@ -122,22 +123,25 @@ def home():
 @app.route('/crypto')
 def crypto():
     """Crypto page - Cyberpunk theme"""
-    # Try API first, fallback to mock data
+    # Get news articles for main feed
+    articles = get_articles("crypto", limit=10)
+
+    # Get crypto coins for sidebar (gainers/losers)
     coins = get_trending_crypto()
     if not coins or len(coins) == 0:
         coins = load_mock('crypto')
 
-    # Calculate gainers, losers, trending from coins data
+    # Calculate gainers, losers, trending from coins data for sidebar
     gainers = sorted(coins, key=lambda x: x.get('change', 0), reverse=True)[:5] if coins else get_demo_gainers()
     losers = sorted(coins, key=lambda x: x.get('change', 0))[:5] if coins else get_demo_losers()
-    trending = coins[:5] if coins else []
+    trending = articles[:5] if articles else []
 
     return render_template(
         'crypto.html',
         category='crypto',
         theme='cyberpunk',
-        articles=coins,
-        gainers=gainers,
+        articles=articles,  # News articles in main feed
+        gainers=gainers,    # Crypto coins in sidebar
         losers=losers,
         trending=trending,
         GA_ID=GA_TRACKING_ID
@@ -146,22 +150,25 @@ def crypto():
 @app.route('/stocks')
 def stocks():
     """Stocks page - Finance theme"""
-    # Try API first, fallback to mock data
+    # Get news articles for main feed
+    articles = get_articles("stocks", limit=10)
+
+    # Get stock data for sidebar (gainers/losers)
     stocks_data = get_trending_stocks()
     if not stocks_data or len(stocks_data) == 0:
         stocks_data = load_mock('stocks')
 
-    # Calculate gainers, losers, trending
+    # Calculate gainers, losers from stocks data for sidebar
     gainers = sorted(stocks_data, key=lambda x: float(x.get('change', 0)), reverse=True)[:5] if stocks_data else get_demo_gainers()
     losers = sorted(stocks_data, key=lambda x: float(x.get('change', 0)))[:5] if stocks_data else get_demo_losers()
-    trending = stocks_data[:5] if stocks_data else []
+    trending = articles[:5] if articles else []
 
     return render_template(
         'stocks.html',
         category='stocks',
         theme='finance',
-        articles=stocks_data,
-        gainers=gainers,
+        articles=articles,  # News articles in main feed
+        gainers=gainers,    # Stock data in sidebar
         losers=losers,
         trending=trending,
         GA_ID=GA_TRACKING_ID
@@ -170,22 +177,25 @@ def stocks():
 @app.route('/ecommerce')
 def ecommerce():
     """E-commerce page - Shop theme"""
-    # Try API first, fallback to mock data
+    # Get news articles for main feed
+    articles = get_articles("ecommerce", limit=10)
+
+    # Get product data for sidebar
     products = get_trending_ecommerce()
     if not products or len(products) == 0:
         products = load_mock('ecommerce')
 
-    # Calculate gainers (by growth %), trending
+    # Calculate gainers (by growth %)
     gainers = sorted(products, key=lambda x: int(x.get('growth', '0%').replace('%', '').replace('+', '')), reverse=True)[:5] if products else get_demo_gainers()
     losers = get_demo_losers()  # E-commerce doesn't have losers typically
-    trending = products[:5] if products else []
+    trending = articles[:5] if articles else []
 
     return render_template(
         'ecommerce.html',
         category='ecommerce',
         theme='shop',
-        articles=products,
-        gainers=gainers,
+        articles=articles,  # News articles in main feed
+        gainers=gainers,    # Product data in sidebar
         losers=losers,
         trending=trending,
         GA_ID=GA_TRACKING_ID
@@ -194,7 +204,10 @@ def ecommerce():
 @app.route('/entertainment')
 def entertainment():
     """Entertainment page - Magazine theme"""
-    # Try API first, fallback to mock data
+    # Get news articles for main feed
+    articles = get_articles("entertainment", limit=10)
+
+    # Get entertainment items for sidebar
     items = get_trending_entertainment()
     if not items or len(items) == 0:
         items = load_mock('entertainment')
@@ -209,8 +222,8 @@ def entertainment():
         'entertainment.html',
         category='entertainment',
         theme='magazine',
-        articles=items,
-        gainers=gainers,
+        articles=articles,  # News articles in main feed
+        gainers=gainers,    # Entertainment items in sidebar
         losers=losers,
         trending=trending_items,
         GA_ID=GA_TRACKING_ID
@@ -219,24 +232,27 @@ def entertainment():
 @app.route('/sports')
 def sports():
     """Sports page - Sports theme"""
-    # Try API first, fallback to mock data
+    # Get news articles for main feed
+    articles = get_articles("sports", limit=10)
+
+    # Get sports matches for sidebar
     matches = get_trending_sports()
     if not matches or len(matches) == 0:
         matches = load_mock('sports')
 
     # Calculate trending and gainers (by popularity)
-    trending = sorted(matches, key=lambda x: x.get('popularity', 0), reverse=True)[:5] if matches else []
-    gainers = trending  # Use popularity as "gainers"
+    trending_matches = sorted(matches, key=lambda x: x.get('popularity', 0), reverse=True)[:5] if matches else []
+    gainers = trending_matches  # Use popularity as "gainers"
     losers = get_demo_losers()
 
     return render_template(
         'sports.html',
         category='sports',
         theme='sports',
-        articles=matches,
-        gainers=gainers,
+        articles=articles,  # News articles in main feed
+        gainers=gainers,    # Sports matches in sidebar
         losers=losers,
-        trending=trending,
+        trending=trending_matches,
         GA_ID=GA_TRACKING_ID
     )
 

@@ -7,6 +7,7 @@ Bronnen: IMDb, YouTube, Spotify, Netflix trending content.
 
 import requests
 import os
+from utils.cache import get_cache, set_cache
 
 # YouTube API config
 YOUTUBE_API_KEY = os.environ.get('YOUTUBE_API_KEY', None)
@@ -22,6 +23,12 @@ def get_trending_entertainment():
         list: Lijst met trending entertainment items
         None: Als de data ophalen mislukt
     """
+    # Check cache first (15 minute TTL)
+    cache_key = "entertainment_trending"
+    cached = get_cache(cache_key)
+    if cached:
+        return cached
+
     # Return None to force fallback to mockdata with images
     return None
 

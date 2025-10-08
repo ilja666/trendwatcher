@@ -6,6 +6,7 @@ Gebruikt pytrends voor trending zoekwoorden en product interesse.
 """
 
 import requests
+from utils.cache import get_cache, set_cache
 
 # Probeer pytrends te importeren (optioneel)
 try:
@@ -29,6 +30,12 @@ def get_trending_ecommerce():
         list: Lijst met trending products/keywords
         None: Als de data ophalen mislukt
     """
+    # Check cache first (15 minute TTL)
+    cache_key = "ecommerce_trending"
+    cached = get_cache(cache_key)
+    if cached:
+        return cached
+
     # Return None to force fallback to mockdata which has images
     return None
 

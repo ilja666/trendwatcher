@@ -7,6 +7,7 @@ Bronnen: TheSportsDB (live events), ESPN, Reddit sports communities.
 
 import requests
 from datetime import datetime, timedelta
+from utils.cache import get_cache, set_cache
 
 # TheSportsDB API endpoint (gratis, geen key nodig voor basis calls)
 THESPORTSDB_BASE_URL = "https://www.thesportsdb.com/api/v1/json/3"
@@ -21,6 +22,12 @@ def get_trending_sports():
         list: Lijst met trending sports items
         None: Als de data ophalen mislukt
     """
+    # Check cache first (15 minute TTL)
+    cache_key = "sports_trending"
+    cached = get_cache(cache_key)
+    if cached:
+        return cached
+
     # Return None to force fallback to mockdata with images
     return None
 

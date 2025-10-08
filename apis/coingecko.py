@@ -6,6 +6,7 @@ Gratis API - geen API key nodig!
 """
 
 import requests
+from utils.cache import get_cache, set_cache
 
 # CoinGecko API endpoint voor trending coins
 COINGECKO_TRENDING_URL = "https://api.coingecko.com/api/v3/search/trending"
@@ -18,6 +19,12 @@ def get_trending_crypto():
         list: Lijst met trending coins (naam, symbool, market_cap_rank)
         None: Als de API call mislukt
     """
+    # Check cache first (15 minute TTL)
+    cache_key = "crypto_trending"
+    cached = get_cache(cache_key)
+    if cached:
+        return cached
+
     try:
         # Doe een GET request naar de CoinGecko API
         response = requests.get(COINGECKO_TRENDING_URL, timeout=10)
@@ -46,6 +53,10 @@ def get_trending_crypto():
                 }
 
                 trending_coins.append(coin_info)
+
+        # Cache for 15 minutes (900 seconds)
+        if trending_coins:
+            set_cache(cache_key, trending_coins, ttl=900)
 
         return trending_coins
 

@@ -24,9 +24,21 @@
            loading="lazy"
            onerror="this.src='{{ url_for('static', filename='placeholder.svg') }}'">
       <div class="article-content">
-        <h2 class="article-title">{{ item.title or item.name or item.keyword }}</h2>
+        <h2 class="article-title">
+          {% if item.url %}
+            <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
+              {{ item.title or item.name or item.keyword }}
+            </a>
+          {% else %}
+            {{ item.title or item.name or item.keyword }}
+          {% endif %}
+        </h2>
         <p class="article-meta">
-          {{ item.type or item.category or item.league or item.platform or '' }}
+          {% if item.source %}
+            <span style="color: var(--muted);">{{ item.source }}</span>
+          {% else %}
+            {{ item.type or item.category or item.league or item.platform or '' }}
+          {% endif %}
           {% if item.price %} · ${{ "%.2f"|format(item.price|float) }}{% endif %}
         </p>
         <p class="article-description">{{ item.description or 'Trending item' }}</p>
@@ -53,6 +65,12 @@
             <span class="stat-label">Score: {{ item.value }}/100</span>
           {% endif %}
         </div>
+        {% if item.url %}
+        <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer" class="read-more-link"
+           style="display: inline-block; margin-top: 0.5rem; color: var(--primary); text-decoration: none; font-size: 0.9rem;">
+          Read more →
+        </a>
+        {% endif %}
       </div>
     </article>
   {% endfor %}

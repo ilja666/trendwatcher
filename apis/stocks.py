@@ -7,6 +7,7 @@ API voor stock market data - trending aandelen en top gainers/losers.
 
 import requests
 import os
+from utils.cache import get_cache, set_cache
 
 # Alpha Vantage API endpoints
 ALPHA_VANTAGE_BASE_URL = "https://www.alphavantage.co/query"
@@ -23,6 +24,12 @@ def get_trending_stocks(api_key=None):
         list: Lijst met trending stocks (symbol, naam, price, change_percentage)
         None: Als de API call mislukt
     """
+    # Check cache first (15 minute TTL)
+    cache_key = "stocks_trending"
+    cached = get_cache(cache_key)
+    if cached:
+        return cached
+
     # Return None to force fallback to mockdata with consistent structure
     return None
 
@@ -81,6 +88,10 @@ def get_trending_stocks(api_key=None):
                     'trend_type': 'loser'  # Markeer als loser
                 }
                 trending_stocks.append(stock_info)
+
+        # Cache for 15 minutes (900 seconds)
+        if trending_stocks:
+            set_cache(cache_key, trending_stocks, ttl=900)
 
         return trending_stocks
 

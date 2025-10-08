@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}{{ category|capitalize }} — TrendWatcher{% endblock %}
+
+{% block content %}
+<div class="category-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+  <h1 class="section-title">{{ category|upper }} TRENDS</h1>
+  <button onclick="refreshData('{{ category }}', '{{ category }}-grid')" class="refresh-btn">🔄 Refresh</button>
+</div>
+
+<!-- Search Filter -->
+<div style="margin-bottom: 1rem;">
+  <input id="category-filter" type="text" placeholder="Search {{ category }}…"
+         style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--fg);" />
+</div>
+
+<!-- Articles Grid -->
+<div class="articles-grid" id="{{ category }}-grid">
+  {% block articles %}
+  {% for item in articles or [] %}
+    <article data-item data-name="{{ item.title or item.name or item.keyword }} {{ item.type or item.category or '' }}" class="article-card">
+      <img src="{{ item.image or url_for('static', filename='placeholder.svg') }}"
+           alt="{{ item.title or item.name or item.keyword }}"
+           class="article-image"
+           loading="lazy"
+           onerror="this.src='{{ url_for('static', filename='placeholder.svg') }}'">
+      <div class="article-content">
+        <h2 class="article-title">{{ item.title or item.name or item.keyword }}</h2>
+        <p class="article-meta">
+          {{ item.type or item.category or item.league or item.platform or '' }}
+          {% if item.price %} · ${{ "%.2f"|format(item.price|float) }}{% endif %}
+        </p>
+        <p class="article-description">{{ item.description or 'Trending item' }}</p>
+        <div class="article-stats">
+          {% if item.change is defined %}
+            <span class="stat-badge {% if item.change|float > 0 %}pos{% else %}neg{% endif %}">
+              {{ item.change }}%
+            </span>
+          {% elif item.rating %}
+            <span class="stat-badge pos">⭐ {{ item.rating }}/10</span>
+          {% elif item.status %}
+            <span class="stat-badge {% if item.status == 'Live' %}pos{% else %}neg{% endif %}">{{ item.status }}</span>
+          {% elif item.growth %}
+            <span class="stat-badge pos">{{ item.growth }}</span>
+          {% endif %}
+
+          {% if item.volume %}
+            <span class="stat-label">Vol: {{ item.volume }}</span>
+          {% elif item.popularity %}
+            <span class="stat-label">Pop: {{ item.popularity }}/100</span>
+          {% elif item.engagement %}
+            <span class="stat-label">{{ item.engagement }}</span>
+          {% elif item.value %}
+            <span class="stat-label">Score: {{ item.value }}/100</span>
+          {% endif %}
+        </div>
+      </div>
+    </article>
+  {% endfor %}
+  {% endblock %}
+</div>
+
+<!-- Search Script -->
+<script>
+  const filterBox = document.getElementById('category-filter');
+  filterBox?.addEventListener('input', e => {
+    const query = e.target.value.toLowerCase();
+    document.querySelectorAll('[data-item]').forEach(el => {
+      const text = (el.getAttribute('data-name') || el.textContent).toLowerCase();
+      el.style.display = text.includes(query) ? '' : 'none';
+    });
+  });
+</script>
+{% endblock %}
+
+{% block sidebar %}
+  {% include "partials/sidebar_unified.html" %}
+{% endblock %}

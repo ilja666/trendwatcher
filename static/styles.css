@@ -724,3 +724,64 @@ img[src=""], img:not([src]) {
     height: 180px;
   }
 }
+
+/* ========== UNIFIED CATEGORY LAYOUT ========== */
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Category-specific theme overrides (minimal differences) */
+.theme-cyberpunk .category-header {
+  border-bottom: 2px solid #7c3aed;
+  padding-bottom: 1rem;
+}
+
+.theme-finance .category-header {
+  border-bottom: 2px solid #3b82f6;
+  padding-bottom: 1rem;
+}
+
+.theme-shop .category-header {
+  border-bottom: 2px solid #f59e0b;
+  padding-bottom: 1rem;
+}
+
+.theme-magazine .category-header {
+  border-bottom: 2px solid #8b5cf6;
+  padding-bottom: 1rem;
+  font-family: Georgia, serif;
+}
+
+.theme-sports .category-header {
+  border-bottom: 2px solid #22c55e;
+  padding-bottom: 1rem;
+}
+
+/* Unified sidebar list styling */
+.trend-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.trend-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9em;
+}
+
+.trend-list li:last-child {
+  border-bottom: none;
+}
+
+.trend-list strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.trend-list small {
+  color: var(--muted);
+}

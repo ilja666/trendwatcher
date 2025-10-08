@@ -1,0 +1,39 @@
+<!-- Top Gainers -->
+<section class="panel">
+  <h4>📈 Top Gainers</h4>
+  <ul class="gainers-list">
+    {% for g in gainers[:5] or [] %}
+      <li>
+        <span class="symbol">{{ g.symbol or g.name or g.title or g.keyword }}</span>
+        <span class="change pos">{{ g.change or '+0' }}{% if g.change and '%' not in (g.change|string) %}%{% endif %}</span>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<!-- Top Losers -->
+<section class="panel">
+  <h4>📉 Top Losers</h4>
+  <ul class="losers-list">
+    {% for l in losers[:5] or [] %}
+      <li>
+        <span class="symbol">{{ l.symbol or l.name or l.title or l.keyword }}</span>
+        <span class="change neg">{{ l.change or '-0' }}{% if l.change and '%' not in (l.change|string) %}%{% endif %}</span>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<!-- Trending -->
+<section class="panel">
+  <h4>🔥 Trending</h4>
+  <ul class="trend-list">
+    {% for t in trending[:5] or [] %}
+      <li>
+        <strong>{{ t.name or t.title or t.keyword }}</strong>
+        {% if t.popularity %}<br><small>Pop: {{ t.popularity }}/100</small>{% endif %}
+        {% if t.rating %}<br><small>⭐ {{ t.rating }}/10</small>{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</section>

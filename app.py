@@ -133,10 +133,10 @@ def crypto():
     trending = coins[:5] if coins else []
 
     return render_template(
-        'crypto_page.html',
+        'crypto.html',
+        category='crypto',
         theme='cyberpunk',
-        coins=coins,
-        articles=coins,  # For article layout
+        articles=coins,
         gainers=gainers,
         losers=losers,
         trending=trending,
@@ -157,10 +157,10 @@ def stocks():
     trending = stocks_data[:5] if stocks_data else []
 
     return render_template(
-        'stocks_page.html',
+        'stocks.html',
+        category='stocks',
         theme='finance',
-        stocks=stocks_data,
-        articles=stocks_data,  # For article layout
+        articles=stocks_data,
         gainers=gainers,
         losers=losers,
         trending=trending,
@@ -181,10 +181,10 @@ def ecommerce():
     trending = products[:5] if products else []
 
     return render_template(
-        'ecommerce_page.html',
+        'ecommerce.html',
+        category='ecommerce',
         theme='shop',
-        products=products,
-        articles=products,  # For article layout
+        articles=products,
         gainers=gainers,
         losers=losers,
         trending=trending,
@@ -206,12 +206,10 @@ def entertainment():
     losers = get_demo_losers()
 
     return render_template(
-        'entertainment_page.html',
+        'entertainment.html',
+        category='entertainment',
         theme='magazine',
-        items=items,
-        articles=items,  # For article layout
-        trending_items=trending_items,
-        top_rated_items=top_rated_items,
+        articles=items,
         gainers=gainers,
         losers=losers,
         trending=trending_items,
@@ -232,10 +230,10 @@ def sports():
     losers = get_demo_losers()
 
     return render_template(
-        'sports_page.html',
+        'sports.html',
+        category='sports',
         theme='sports',
-        matches=matches,
-        articles=matches,  # For article layout
+        articles=matches,
         gainers=gainers,
         losers=losers,
         trending=trending,

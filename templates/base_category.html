@@ -18,7 +18,7 @@
   {% block articles %}
   {% for item in articles or [] %}
     <article data-item data-name="{{ item.title or item.name or item.keyword }} {{ item.type or item.category or '' }}" class="article-card">
-      <img src="{{ item.image or url_for('static', filename='placeholder.svg') }}"
+      <img src="{{ item.image or item.thumb or url_for('static', filename='placeholder.svg') }}"
            alt="{{ item.title or item.name or item.keyword }}"
            class="article-image"
            loading="lazy"

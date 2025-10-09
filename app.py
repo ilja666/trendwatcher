@@ -105,10 +105,16 @@ def _write_votes(votes_dict):
 @app.route('/')
 def home():
     """Homepage - Newspaper style"""
-    # Load home articles from mockdata
-    articles_data = load_mock('home')
+    # Get news articles for homepage
+    articles_data = get_articles("home", limit=10)
+
+    # Fallback to mockdata if no articles
     if not articles_data or len(articles_data) == 0:
-        articles_data = [{"title": "Welcome", "teaser": "TrendWatcher", "image": "", "category": "home"}]
+        articles_data = load_mock('home')
+
+    # Ensure we have at least one article
+    if not articles_data or len(articles_data) == 0:
+        articles_data = [{"title": "Welcome to TrendWatcher", "description": "Your source for trending news", "image": "", "source": "TrendWatcher"}]
 
     return render_template(
         'home.html',

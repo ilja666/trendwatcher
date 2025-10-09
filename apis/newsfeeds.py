@@ -15,7 +15,8 @@ CATEGORY_QUERIES = {
     "stocks": "stock market OR finance OR earnings OR trading",
     "ecommerce": "e-commerce OR shopping OR retail OR amazon",
     "entertainment": "music OR movies OR celebrity OR hollywood",
-    "sports": "sports OR football OR basketball OR nba OR f1"
+    "sports": "sports OR football OR basketball OR nba OR f1",
+    "home": "trending OR technology OR business OR world news"
 }
 
 

@@ -1,14 +1,23 @@
 <!doctype html>
 <html lang="nl">
 <head>
-  <!-- Google tag (gtag.js) -->
+  <!-- Google tag (gtag.js) - Consent Required (GDPR/Belgian Law) -->
   {% if GA_ID %}
   <script async src="https://www.googletagmanager.com/gtag/js?id={{ GA_ID }}"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', '{{ GA_ID }}');
+
+    // Default: deny all tracking until consent
+    gtag('consent', 'default', {
+      'analytics_storage': 'denied',
+      'ad_storage': 'denied'
+    });
+
+    gtag('config', '{{ GA_ID }}', {
+      'anonymize_ip': true // IP anonymization for GDPR
+    });
   </script>
   {% endif %}
 
@@ -106,6 +115,9 @@
     // Optional: Start auto-refresh elke 5 minuten
     // startAutoRefresh(5);
   </script>
+
+  <!-- Cookie Consent Banner (must load before tracking) -->
+  <script src="{{ url_for('static', filename='js/cookie-consent.js') }}"></script>
 
   <!-- Affiliate Click Tracking -->
   <script src="{{ url_for('static', filename='js/tracking.js') }}"></script>

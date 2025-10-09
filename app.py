@@ -4,13 +4,14 @@ TrendWatcher - Multi-Theme Flask Webapp
 Multi-market trending data met per-category themes.
 """
 
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, redirect, url_for
 from apis.coingecko import get_trending_crypto
 from apis.stocks import get_trending_stocks
 from apis.ecommerce import get_trending_ecommerce
 from apis.entertainment import get_trending_entertainment
 from apis.sports import get_trending_sports
 from apis.newsfeeds import get_articles
+from utils.affiliates import add_affiliate_to_articles
 from datetime import datetime
 import os
 import json
@@ -164,6 +165,9 @@ def stocks():
     if not stocks_data or len(stocks_data) == 0:
         stocks_data = load_mock('stocks')
 
+    # Add affiliate links to stocks
+    stocks_data = add_affiliate_to_articles(stocks_data, "stocks")
+
     # Calculate gainers, losers from stocks data for sidebar
     gainers = sorted(stocks_data, key=lambda x: float(x.get('change', 0)), reverse=True)[:5] if stocks_data else get_demo_gainers()
     losers = sorted(stocks_data, key=lambda x: float(x.get('change', 0)))[:5] if stocks_data else get_demo_losers()
@@ -174,7 +178,7 @@ def stocks():
         category='stocks',
         theme='finance',
         articles=articles,  # News articles in main feed
-        gainers=gainers,    # Stock data in sidebar
+        gainers=gainers,    # Stock data in sidebar (with eToro affiliate links)
         losers=losers,
         trending=trending,
         GA_ID=GA_TRACKING_ID
@@ -186,10 +190,16 @@ def ecommerce():
     # Get news articles for main feed
     articles = get_articles("ecommerce", limit=10)
 
+    # Add affiliate links to articles
+    articles = add_affiliate_to_articles(articles, "ecommerce")
+
     # Get product data for sidebar
     products = get_trending_ecommerce()
     if not products or len(products) == 0:
         products = load_mock('ecommerce')
+
+    # Add affiliate links to products
+    products = add_affiliate_to_articles(products, "ecommerce")
 
     # Calculate gainers (by growth %)
     gainers = sorted(products, key=lambda x: int(x.get('growth', '0%').replace('%', '').replace('+', '')), reverse=True)[:5] if products else get_demo_gainers()
@@ -200,8 +210,8 @@ def ecommerce():
         'ecommerce.html',
         category='ecommerce',
         theme='shop',
-        articles=articles,  # News articles in main feed
-        gainers=gainers,    # Product data in sidebar
+        articles=articles,  # News articles in main feed (with affiliate links)
+        gainers=gainers,    # Product data in sidebar (with affiliate links)
         losers=losers,
         trending=trending,
         GA_ID=GA_TRACKING_ID
@@ -354,6 +364,59 @@ def not_found(e):
 def server_error(e):
     """500 error handler"""
     return render_template('500.html', GA_ID=GA_TRACKING_ID), 500
+
+# ========== NEWSLETTER SUBSCRIPTION ==========
+
+@app.route("/subscribe", methods=["POST"])
+def subscribe():
+    """Newsletter subscription endpoint"""
+    email = request.form.get("email")
+
+    if email and "@" in email:
+        # Save to CSV file
+        subscribers_file = "data/subscribers.csv"
+        os.makedirs("data", exist_ok=True)
+
+        # Append email to CSV
+        with _vote_lock:  # Reuse vote lock for thread safety
+            file_exists = os.path.exists(subscribers_file)
+            with open(subscribers_file, "a", encoding="utf-8") as f:
+                if not file_exists:
+                    f.write("email,timestamp\n")  # CSV header
+                f.write(f"{email},{datetime.now().isoformat()}\n")
+
+        print(f"[NEWSLETTER] New subscriber: {email}")
+
+    # Redirect back to homepage
+    return redirect(url_for("home"))
+
+# ========== CLICK TRACKING ==========
+
+@app.route("/track_click", methods=["POST"])
+def track_click():
+    """Track affiliate and newsletter clicks"""
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"ok": False, "error": "No data"}), 400
+
+        # Log click to CSV
+        clicks_file = "data/clicks.csv"
+        os.makedirs("data", exist_ok=True)
+
+        with _vote_lock:
+            file_exists = os.path.exists(clicks_file)
+            with open(clicks_file, "a", encoding="utf-8") as f:
+                if not file_exists:
+                    f.write("url,label,timestamp\n")
+                f.write(f"{data.get('url', '')},{data.get('label', '')},{data.get('timestamp', '')}\n")
+
+        print(f"[CLICK] {data.get('label', 'Unknown')} -> {data.get('url', 'Unknown')}")
+        return jsonify({"ok": True})
+
+    except Exception as e:
+        print(f"[CLICK ERROR] {e}")
+        return jsonify({"ok": False, "error": str(e)}), 500
 
 # Start development server
 if __name__ == '__main__':

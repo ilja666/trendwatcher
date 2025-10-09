@@ -15,6 +15,25 @@
   <meta charset="utf-8">
   <title>{% block title %}TrendWatcher{% endblock %}</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="{% block description %}Track trending crypto, stocks, e-commerce products, entertainment, and sports. Real-time data and insights.{% endblock %}">
+  <meta name="keywords" content="{% block keywords %}trending, crypto, stocks, e-commerce, entertainment, sports, news, insights{% endblock %}">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ request.url }}">
+  <meta property="og:title" content="{% block og_title %}{{ self.title() }}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{{ self.description() }}{% endblock %}">
+  <meta property="og:image" content="{% block og_image %}{{ url_for('static', filename='og-image.png', _external=True) }}{% endblock %}">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="{{ request.url }}">
+  <meta name="twitter:title" content="{% block twitter_title %}{{ self.title() }}{% endblock %}">
+  <meta name="twitter:description" content="{% block twitter_description %}{{ self.description() }}{% endblock %}">
+  <meta name="twitter:image" content="{% block twitter_image %}{{ self.og_image() }}{% endblock %}">
+
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body class="theme-{{ theme|default('newspaper') }}">
@@ -87,5 +106,8 @@
     // Optional: Start auto-refresh elke 5 minuten
     // startAutoRefresh(5);
   </script>
+
+  <!-- Affiliate Click Tracking -->
+  <script src="{{ url_for('static', filename='js/tracking.js') }}"></script>
 </body>
 </html>

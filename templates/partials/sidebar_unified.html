@@ -1,6 +1,13 @@
 <!-- Top Gainers -->
 <section class="panel">
   <h4>📈 Top Gainers</h4>
+  {% if category in ['crypto', 'stocks', 'ecommerce'] %}
+  <small style="display: block; color: var(--muted); font-size: 0.75rem; margin-bottom: 0.5rem;">
+    {% if category == 'crypto' %}Sponsored by Coinbase{% endif %}
+    {% if category == 'stocks' %}Sponsored by eToro{% endif %}
+    {% if category == 'ecommerce' %}Sponsored by Amazon{% endif %}
+  </small>
+  {% endif %}
   <ul class="gainers-list">
     {% for g in gainers[:5] or [] %}
       <li>

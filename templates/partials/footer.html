@@ -1,3 +1,33 @@
-<footer class="tw-footer">
-  <small>© 2025 TrendWatcher · Where the world talks before you hear it</small>
+<footer class="tw-footer" style="padding: 2rem 1rem; background: var(--sidebar-bg); border-top: 1px solid var(--border);">
+  <!-- Newsletter Signup -->
+  <div style="max-width: 600px; margin: 0 auto 1.5rem;">
+    <form action="/subscribe" method="post" class="newsletter-form" style="background: var(--card); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+      <label style="display: block; font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem;">
+        📩 Weekly Trend Digest
+      </label>
+      <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem;">
+        Get the hottest trends delivered to your inbox every week
+      </p>
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <input
+          type="email"
+          name="email"
+          placeholder="your@email.com"
+          required
+          style="flex: 1; min-width: 200px; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg);"
+        >
+        <button
+          type="submit"
+          style="padding: 0.75rem 1.5rem; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; white-space: nowrap;"
+        >
+          Subscribe
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Copyright -->
+  <small style="display: block; text-align: center; color: var(--muted);">
+    © 2025 TrendWatcher · Where the world talks before you hear it
+  </small>
 </footer>

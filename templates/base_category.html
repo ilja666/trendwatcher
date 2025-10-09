@@ -65,7 +65,12 @@
             <span class="stat-label">Score: {{ item.value }}/100</span>
           {% endif %}
         </div>
-        {% if item.url %}
+        {% if item.affiliate_url %}
+        <a href="{{ item.affiliate_url }}" target="_blank" rel="noopener noreferrer sponsored" class="affiliate-btn"
+           style="display: inline-block; margin-top: 0.75rem; padding: 0.5rem 1rem; background: var(--primary); color: white; border-radius: 6px; text-decoration: none; font-size: 0.9rem; font-weight: 500;">
+          {{ item.affiliate_label or 'View Product' }} 🔗
+        </a>
+        {% elif item.url %}
         <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer" class="read-more-link"
            style="display: inline-block; margin-top: 0.5rem; color: var(--primary); text-decoration: none; font-size: 0.9rem;">
           Read more →

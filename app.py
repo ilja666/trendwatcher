@@ -418,6 +418,23 @@ def track_click():
         print(f"[CLICK ERROR] {e}")
         return jsonify({"ok": False, "error": str(e)}), 500
 
+# ========== LEGAL PAGES ==========
+
+@app.route("/privacy")
+def privacy():
+    """Privacy policy page"""
+    return render_template("legal/privacy.html", GA_ID=GA_TRACKING_ID)
+
+@app.route("/terms")
+def terms():
+    """Terms of use page"""
+    return render_template("legal/terms.html", GA_ID=GA_TRACKING_ID)
+
+@app.route("/cookies")
+def cookies_policy():
+    """Cookie policy page"""
+    return render_template("legal/cookies.html", GA_ID=GA_TRACKING_ID)
+
 # Start development server
 if __name__ == '__main__':
     print("TrendWatcher Multi-Theme is gestart!")
